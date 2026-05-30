@@ -1,7 +1,7 @@
 // 1) Create a Google Sheet + Apps Script Web App.
 // 2) Paste your Web App URL below to send every free-trial/get-started form submission to your live spreadsheet.
 // Example: const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx.../exec";
-const GOOGLE_SHEET_WEB_APP_URL = "";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzxMqn_LrJQ75ifItGRnSlgMe1Zui6SZSHnEDkFiNpnPbWZHuJvEG7b3UF4aJ3dvhzWfQ/exec";
 
 const modal = document.querySelector('.modal');
 const openModalButtons = document.querySelectorAll('.open-modal');
