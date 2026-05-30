@@ -1,4 +1,4 @@
-# InstantLead AI Static Website — V2
+# InstantLead AI Static Website — V3
 
 This version includes:
 
@@ -78,3 +78,8 @@ const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/YOUR_ID_HER
 ## Important
 
 Do not paste private API keys into this static website. The Google Apps Script URL is okay for this simple lead-capture setup, but for a serious production SaaS you would normally use a protected backend, spam protection, and validation.
+
+
+## V3 chatbot update
+
+The floating chatbot now runs a realistic lead-qualification simulation instead of only giving generic keyword replies. It asks for business type, visitor need, urgency, name, contact details, and preferred time, then creates a structured lead summary. If the Google Sheets endpoint is connected, completed chat leads can also be sent to the spreadsheet.

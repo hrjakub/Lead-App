@@ -246,26 +246,196 @@ demoReplies.addEventListener('click', (event) => {
   runScenario(button.dataset.scenario);
 });
 
-function getDemoReply(text) {
+const chatWidgetBody = document.querySelector('.chat-widget-body');
+
+const widgetState = {
+  stage: 'business',
+  data: {}
+};
+
+function resetWidgetConversation() {
+  widgetState.stage = 'business';
+  widgetState.data = {};
+  chatWidgetBody.innerHTML = '';
+  chatWidgetBody.appendChild(createMessage('bot', 'Hi. I’m InstantLead AI. I can simulate a real lead-qualification conversation for your business. What type of business should I act for? For example: dental clinic, real estate agency, home services, restaurant, or gym.'));
+  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
+}
+
+function isGreeting(text) {
+  const lower = text.toLowerCase().trim();
+  return ['hi', 'hello', 'hey', 'hola', 'bonjour', 'ciao', 'good morning', 'good afternoon', 'good evening'].includes(lower);
+}
+
+function detectBusiness(text) {
   const lower = text.toLowerCase();
+  if (lower.includes('dental') || lower.includes('dentist') || lower.includes('clinic')) return 'dental clinic';
+  if (lower.includes('real') || lower.includes('estate') || lower.includes('property') || lower.includes('broker')) return 'real estate agency';
+  if (lower.includes('home') || lower.includes('plumb') || lower.includes('boiler') || lower.includes('repair') || lower.includes('hvac')) return 'home services company';
+  if (lower.includes('restaurant') || lower.includes('bar') || lower.includes('cafe')) return 'restaurant';
+  if (lower.includes('gym') || lower.includes('fitness') || lower.includes('trainer')) return 'fitness business';
+  if (lower.includes('hotel')) return 'hotel';
+  if (lower.includes('law') || lower.includes('legal')) return 'law firm';
+  return text;
+}
 
-  if (lower.includes('price') || lower.includes('pricing') || lower.includes('cost')) {
-    return 'Pricing starts at $50/month. The main value is recovering leads that currently go unanswered after hours or during busy periods.';
+function containsPricingQuestion(text) {
+  const lower = text.toLowerCase();
+  return lower.includes('price') || lower.includes('pricing') || lower.includes('cost') || lower.includes('$') || lower.includes('€');
+}
+
+function containsSpreadsheetQuestion(text) {
+  const lower = text.toLowerCase();
+  return lower.includes('sheet') || lower.includes('spreadsheet') || lower.includes('excel') || lower.includes('google') || lower.includes('crm');
+}
+
+function containsSetupQuestion(text) {
+  const lower = text.toLowerCase();
+  return lower.includes('setup') || lower.includes('install') || lower.includes('integration') || lower.includes('website');
+}
+
+function containsTrialRequest(text) {
+  const lower = text.toLowerCase();
+  return lower.includes('trial') || lower.includes('get started') || lower.includes('start now') || lower.includes('contact me');
+}
+
+function openTrialFromChat() {
+  leadSource.value = 'Chatbot CTA';
+  pageUrl.value = window.location.href;
+  userAgent.value = navigator.userAgent;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function widgetBotReply(text) {
+  const typing = createTypingIndicator();
+  chatWidgetBody.appendChild(typing);
+  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
+  await wait(550);
+  typing.remove();
+  chatWidgetBody.appendChild(createMessage('bot', text));
+  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
+}
+
+async function sendWidgetLeadToSheet() {
+  if (!GOOGLE_SHEET_WEB_APP_URL) {
+    console.log('Chat lead captured locally:', widgetState.data);
+    return;
   }
 
-  if (lower.includes('book') || lower.includes('appointment') || lower.includes('calendar')) {
-    return 'The AI can ask for preferred time, urgency, contact details, and then send your team a clean booking request or calendar-ready lead summary.';
+  const contact = widgetState.data.contact || '';
+  const formData = new FormData();
+  formData.append('submitted_at', new Date().toISOString());
+  formData.append('business', widgetState.data.business || '');
+  formData.append('industry', widgetState.data.business || '');
+  formData.append('name', widgetState.data.name || '');
+  formData.append('email', contact.includes('@') ? contact : '');
+  formData.append('phone', contact.includes('@') ? '' : contact);
+  formData.append('website', '');
+  formData.append('plan', 'Chatbot lead qualification demo');
+  formData.append('contact_preference', 'Captured through chat widget');
+  formData.append('volume', '');
+  formData.append('message', `Need: ${widgetState.data.need || ''}. Urgency: ${widgetState.data.urgency || ''}. Preferred time: ${widgetState.data.time || ''}.`);
+  formData.append('source', 'Floating chat widget');
+  formData.append('page_url', window.location.href);
+  formData.append('user_agent', navigator.userAgent);
+
+  await submitLeadToSheet(formData);
+}
+
+function makeLeadSummary() {
+  const d = widgetState.data;
+  return `Lead captured and qualified ✅\n\nBusiness type: ${d.business}\nVisitor need: ${d.need}\nUrgency: ${d.urgency}\nName: ${d.name}\nContact: ${d.contact}\nPreferred time: ${d.time}\n\nYour team would receive this as a structured lead summary, so the visitor is not lost even outside business hours.`;
+}
+
+async function handleWidgetConversation(text) {
+  const clean = text.trim();
+  const lower = clean.toLowerCase();
+
+  if (lower === 'restart' || lower === 'reset' || lower === 'start over') {
+    resetWidgetConversation();
+    return;
   }
 
-  if (lower.includes('sheet') || lower.includes('excel') || lower.includes('google')) {
-    return 'Form submissions can be sent directly into a live spreadsheet with timestamp, name, contact details, industry, plan, source button, and message.';
+  if (containsTrialRequest(clean)) {
+    await widgetBotReply('Perfect. I’ll open the free-trial form so your details can be captured properly.');
+    openTrialFromChat();
+    return;
   }
 
-  if (lower.includes('lead') || lower.includes('qualify')) {
-    return 'The AI qualifies each visitor by asking what they need, how urgent it is, where they are located, and how your team should contact them.';
+  if (containsPricingQuestion(clean)) {
+    await widgetBotReply('Pricing starts from $50/month. The positioning is simple: if the AI saves even one missed lead or appointment per month, it can pay for itself. There is also a $200 one-time setup option for custom AI training and lead-flow configuration.');
+    return;
   }
 
-  return 'In a real installation, I would answer FAQs, qualify the visitor, collect contact details, and alert your team instantly with a structured lead summary.';
+  if (containsSpreadsheetQuestion(clean)) {
+    await widgetBotReply('Yes. Lead data can be sent directly into a live Google Sheet / Excel-style spreadsheet with timestamp, name, contact details, business type, need, urgency, source button, and message.');
+    return;
+  }
+
+  if (containsSetupQuestion(clean)) {
+    await widgetBotReply('Setup is designed to be lightweight: we add the AI lead widget to the website, train it on the business FAQs and services, define the qualification questions, and connect the lead output to email, Google Sheets, or CRM.');
+    return;
+  }
+
+  if (isGreeting(clean) && widgetState.stage === 'business') {
+    await widgetBotReply('Hi. Let’s run a quick simulation. What kind of business should I act for — dental clinic, real estate agency, home services, restaurant, or something else?');
+    return;
+  }
+
+  switch (widgetState.stage) {
+    case 'business': {
+      widgetState.data.business = detectBusiness(clean);
+      widgetState.stage = 'need';
+      await widgetBotReply(`Great. I’ll act as the AI assistant for a ${widgetState.data.business}. A website visitor arrives. What are they looking for? For example: appointment, quote, property viewing, repair, booking, or consultation.`);
+      break;
+    }
+
+    case 'need': {
+      widgetState.data.need = clean;
+      widgetState.stage = 'urgency';
+      await widgetBotReply('Understood. I would now qualify urgency. Is this urgent today, needed this week, or just a general inquiry?');
+      break;
+    }
+
+    case 'urgency': {
+      widgetState.data.urgency = clean;
+      widgetState.stage = 'name';
+      await widgetBotReply('Good. Now I capture the visitor identity. What name should I use for this demo lead?');
+      break;
+    }
+
+    case 'name': {
+      widgetState.data.name = clean;
+      widgetState.stage = 'contact';
+      await widgetBotReply(`Thanks, ${widgetState.data.name}. What phone number or email should the business use to follow up?`);
+      break;
+    }
+
+    case 'contact': {
+      widgetState.data.contact = clean;
+      widgetState.stage = 'time';
+      await widgetBotReply('Final step: what is the preferred contact time or appointment window?');
+      break;
+    }
+
+    case 'time': {
+      widgetState.data.time = clean;
+      widgetState.stage = 'complete';
+      await widgetBotReply(makeLeadSummary());
+      await sendWidgetLeadToSheet();
+      await widgetBotReply('This is what InstantLead AI does: it turns anonymous website visitors into qualified leads your team can act on. Type “restart” to test another case, “pricing” for pricing, or “trial” to open the free-trial form.');
+      break;
+    }
+
+    case 'complete': {
+      await widgetBotReply('This lead is already qualified. Type “restart” to simulate a new lead, “pricing” to see pricing, or “trial” to open the free-trial form.');
+      break;
+    }
+
+    default: {
+      resetWidgetConversation();
+    }
+  }
 }
 
 floatingChat.addEventListener('click', () => {
@@ -276,25 +446,23 @@ closeChat.addEventListener('click', () => {
   chatWidget.classList.remove('open');
 });
 
-function sendDemoMessage() {
+async function sendDemoMessage() {
   const text = chatInput.value.trim();
   if (!text) return;
 
-  const body = document.querySelector('.chat-widget-body');
-  body.appendChild(createMessage('user', text));
+  chatWidgetBody.appendChild(createMessage('user', text));
   chatInput.value = '';
-  body.scrollTop = body.scrollHeight;
+  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
 
-  setTimeout(() => {
-    body.appendChild(createMessage('bot', getDemoReply(text)));
-    body.scrollTop = body.scrollHeight;
-  }, 520);
+  await handleWidgetConversation(text);
 }
 
 chatSend.addEventListener('click', sendDemoMessage);
 chatInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') sendDemoMessage();
 });
+
+resetWidgetConversation();
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
