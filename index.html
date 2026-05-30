@@ -22,7 +22,7 @@
         <a href="#pricing">Pricing</a>
         <a href="#testimonials">Results</a>
       </div>
-      <button class="btn btn-small btn-primary open-modal">Get Started</button>
+      <button class="btn btn-small btn-primary open-modal" data-source="Header Get Started">Get Started</button>
     </nav>
   </header>
 
@@ -33,7 +33,7 @@
         <h1>Never Miss a Lead Again</h1>
         <p class="hero-text">InstantLead AI replies to every inquiry in seconds, qualifies prospects automatically, and helps book more appointments even outside business hours.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary open-modal">Start Free Trial</button>
+          <button class="btn btn-primary open-modal" data-source="Hero Start Free Trial">Start Free Trial</button>
           <a href="#demo" class="btn btn-secondary">See Live Demo</a>
         </div>
         <div class="hero-stats" aria-label="Performance statistics">
@@ -93,21 +93,44 @@
     </section>
 
     <section id="demo" class="demo section-padding">
-      <div class="container demo-grid">
-        <div class="reveal">
-          <p class="eyebrow">Live workflow</p>
-          <h2>See InstantLead AI in Action</h2>
-          <p class="section-subtitle left">The assistant captures the inquiry, qualifies the need, and pushes the prospect toward a booked appointment.</p>
-        </div>
-        <div class="demo-panel reveal delay-1">
-          <div class="demo-title">Website Chat Widget</div>
-          <div class="timeline">
-            <div><span>1</span>Visitor asks a question</div>
-            <div><span>2</span>AI qualifies intent and urgency</div>
-            <div><span>3</span>Lead details are captured</div>
-            <div><span>4</span>Appointment request is sent</div>
+      <div class="container center reveal">
+        <p class="eyebrow">Interactive live demo</p>
+        <h2>Watch the AI Turn a Visitor into a Qualified Lead</h2>
+        <p class="section-subtitle">Choose a scenario and the demo will simulate how InstantLead AI replies, qualifies the prospect, captures contact details, and sends your team a clean lead summary.</p>
+      </div>
+
+      <div class="container demo-simulator reveal delay-1">
+        <div class="demo-chat-card">
+          <div class="demo-chat-header">
+            <div>
+              <strong>InstantLead AI Demo</strong>
+              <small id="demo-scenario-label">Dental practice lead</small>
+            </div>
+            <span class="status-pill">Live simulation</span>
+          </div>
+
+          <div class="demo-chat-body" id="demo-chat-body" aria-live="polite"></div>
+
+          <div class="demo-replies" id="demo-replies">
+            <button type="button" data-scenario="dental">Dental emergency</button>
+            <button type="button" data-scenario="realestate">Real estate inquiry</button>
+            <button type="button" data-scenario="homeservices">Home services lead</button>
           </div>
         </div>
+
+        <aside class="lead-summary-card">
+          <p class="eyebrow mini">Lead summary sent to your team</p>
+          <h3 id="lead-summary-title">Waiting for conversation...</h3>
+          <div class="lead-summary-grid">
+            <div><span>Name</span><strong id="summary-name">—</strong></div>
+            <div><span>Service</span><strong id="summary-service">—</strong></div>
+            <div><span>Urgency</span><strong id="summary-urgency">—</strong></div>
+            <div><span>Preferred time</span><strong id="summary-time">—</strong></div>
+            <div class="wide"><span>Contact</span><strong id="summary-contact">—</strong></div>
+            <div class="wide hot"><span>Status</span><strong id="summary-status">—</strong></div>
+          </div>
+          <button class="btn btn-primary full open-modal" data-source="Demo CTA">Try this on my website</button>
+        </aside>
       </div>
     </section>
 
@@ -145,8 +168,8 @@
         </article>
         <article class="feature-card reveal delay-2">
           <span>6</span>
-          <h3>Daily Lead Summary</h3>
-          <p>Provides a clear overview of conversations, hot leads, and booking requests.</p>
+          <h3>Dynamic Lead Sheet</h3>
+          <p>Free trial and contact form submissions can be sent directly into your live spreadsheet.</p>
         </article>
       </div>
     </section>
@@ -174,7 +197,7 @@
             <li>Email and form integration</li>
             <li>Priority support</li>
           </ul>
-          <button class="btn btn-secondary open-modal">Get Started</button>
+          <button class="btn btn-secondary open-modal" data-source="Pricing Setup Monthly">Get Started</button>
         </article>
         <article class="pricing-card featured reveal delay-1">
           <div class="popular">Most Popular</div>
@@ -191,7 +214,7 @@
             <li>No long-term contract</li>
             <li>Ideal for testing ROI</li>
           </ul>
-          <button class="btn btn-primary open-modal">Start Today</button>
+          <button class="btn btn-primary open-modal" data-source="Pricing Simple Monthly">Start Today</button>
         </article>
       </div>
       <div class="container center quick-note reveal">⚡ Quick setup: live in 24 hours from $50/month.</div>
@@ -223,7 +246,7 @@
       <div class="container center reveal">
         <h2>Stop Losing Leads Today</h2>
         <p>Capture more opportunities with instant AI follow-up.</p>
-        <button class="btn btn-light open-modal">Start Your Free Trial Now →</button>
+        <button class="btn btn-light open-modal" data-source="Final CTA Free Trial">Start Your Free Trial Now →</button>
         <small>Setup in 24 hours • From $50/month • Cancel anytime</small>
       </div>
     </section>
@@ -242,13 +265,14 @@
 
   <div class="chat-widget" aria-live="polite">
     <div class="chat-widget-header">
-      <strong>InstantLead AI</strong>
+      <div>
+        <strong>InstantLead AI</strong>
+        <small>Lead qualification demo</small>
+      </div>
       <button class="close-chat" aria-label="Close chat widget">×</button>
     </div>
     <div class="chat-widget-body">
-      <div class="message bot">Hi. Want to see how fast AI can answer a new lead?</div>
-      <div class="message user hidden">Yes, show me.</div>
-      <div class="message bot hidden">Great. I would ask for contact details, service need, urgency, and preferred appointment time.</div>
+      <div class="message bot">Hi. I’m the demo assistant. Ask about pricing, booking, lead capture, or how the AI qualifies visitors.</div>
     </div>
     <div class="chat-widget-input">
       <input type="text" placeholder="Type a message..." />
@@ -262,8 +286,12 @@
       <button class="modal-close close-modal" aria-label="Close signup form">×</button>
       <div class="form-view">
         <h2 id="modal-title">Start Your Free Trial</h2>
-        <p>Get set up in 24 hours. Choose your plan below.</p>
+        <p>Submit your details and they will be sent directly into your connected lead spreadsheet.</p>
         <form id="lead-form">
+          <input type="hidden" name="source" id="lead-source" value="Website form" />
+          <input type="hidden" name="page_url" id="page-url" />
+          <input type="hidden" name="user_agent" id="user-agent" />
+
           <label>Business Name *<input name="business" type="text" required /></label>
           <label>Industry *
             <select name="industry" required>
@@ -286,16 +314,26 @@
               <option value="">Choose a plan</option>
               <option>Setup + $200/month</option>
               <option>$50/month — Most Popular</option>
+              <option>Not sure yet</option>
             </select>
           </label>
-          <label>Tell us about your lead volume<textarea name="volume" rows="3"></textarea></label>
+          <label>Preferred Contact Method
+            <select name="contact_preference">
+              <option>Email</option>
+              <option>Phone</option>
+              <option>WhatsApp</option>
+            </select>
+          </label>
+          <label>Tell us about your lead volume<textarea name="volume" rows="3" placeholder="Example: 30-50 inquiries per month, mostly from Google Ads"></textarea></label>
+          <label>Message<textarea name="message" rows="3" placeholder="Anything specific you want the AI to handle?"></textarea></label>
           <button class="btn btn-primary full" type="submit">Start Free Trial</button>
+          <p class="form-note" id="form-note">Connect the Google Apps Script URL in <code>script.js</code> to store submissions in a live spreadsheet.</p>
         </form>
       </div>
       <div class="success-view">
         <div class="success-icon">✓</div>
-        <h2>Success!</h2>
-        <p>Thank you for signing up. We'll contact you within 24 hours to get your InstantLead AI system set up.</p>
+        <h2>Submission received</h2>
+        <p>Thank you. Your details have been captured. If your spreadsheet endpoint is connected, this lead has also been added to your live sheet.</p>
         <button class="btn btn-primary close-modal">Close</button>
       </div>
     </div>

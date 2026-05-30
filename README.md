@@ -1,61 +1,80 @@
-# InstantLead AI Static Website
+# InstantLead AI Static Website — V2
 
-This is the easiest version to deploy on Vercel. It uses only three website files:
+This version includes:
 
-- `index.html`
-- `style.css`
-- `script.js`
+- A more realistic interactive live demo conversation
+- Scenario buttons for dental, real estate, and home services leads
+- A stronger lead summary card showing what the business receives
+- A free trial / get started form prepared for spreadsheet capture
+- Google Sheets integration using Google Apps Script
 
-No terminal, npm, Next.js, or local setup is required.
+## Files
 
-## Browser-only deployment steps
+- `index.html` — website structure
+- `style.css` — styling
+- `script.js` — demo logic + form submission logic
+- `google-apps-script.gs` — paste this into Google Apps Script to connect the form to a spreadsheet
+- `vercel.json` — static Vercel routing config
 
-### 1. Unzip this folder
-Unzip the downloaded file on your computer.
+## Deploy update to Vercel
 
-### 2. Create a GitHub repository
-Go to GitHub and create a new repository, for example:
+1. Upload these files to the existing GitHub repository.
+2. Replace the old files.
+3. Click **Commit changes**.
+4. Vercel will automatically redeploy.
 
-`instantlead-ai`
+## Connect the form to a live spreadsheet
 
-### 3. Upload the files
-Inside the new GitHub repository, click:
+The easiest beginner setup is Google Sheets. You can export the sheet to Excel any time.
 
-`Add file` → `Upload files`
+### Step 1 — Create the Google Sheet
 
-Upload the files from inside this folder, not the folder itself.
+1. Open Google Sheets.
+2. Create a new blank spreadsheet.
+3. Name it: `InstantLead AI Leads`.
 
-The repository should look like this:
+### Step 2 — Add the Apps Script code
 
-```text
-index.html
-style.css
-script.js
-README.md
+1. In the Google Sheet, go to **Extensions → Apps Script**.
+2. Delete any starter code.
+3. Paste the full code from `google-apps-script.gs`.
+4. Save the project.
+
+### Step 3 — Deploy as a Web App
+
+1. Click **Deploy → New deployment**.
+2. Select **Web app**.
+3. Set **Execute as** to `Me`.
+4. Set **Who has access** to `Anyone`.
+5. Click **Deploy**.
+6. Copy the Web App URL. It should end with `/exec`.
+
+### Step 4 — Paste the URL into the website
+
+1. Open `script.js`.
+2. Find this line:
+
+```js
+const GOOGLE_SHEET_WEB_APP_URL = "";
 ```
 
-### 4. Deploy on Vercel
-Go to Vercel and click:
+3. Paste your URL inside the quotes:
 
-`New Project` → select your GitHub repository → `Deploy`
+```js
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/YOUR_ID_HERE/exec";
+```
 
-Vercel should detect this as a static website automatically.
+4. Commit the updated `script.js` to GitHub.
+5. Vercel will redeploy.
 
-### 5. Edit content later
-To change text, pricing, testimonials, or contact form fields, edit `index.html` directly in GitHub.
+## Test
 
-To change colors, spacing, or design, edit `style.css`.
+1. Open your live Vercel website.
+2. Click **Start Free Trial** or **Get Started**.
+3. Submit a test lead.
+4. Open your Google Sheet.
+5. A new row should appear with the lead information.
 
-To change the modal or chat behavior, edit `script.js`.
+## Important
 
-## Important note about the form
-The form currently shows a success message after submission, but it does not send data anywhere yet.
-
-Later, you can connect it to:
-
-- Google Sheets
-- email notification
-- a CRM
-- Formspree
-- Make/Zapier
-- a backend API
+Do not paste private API keys into this static website. The Google Apps Script URL is okay for this simple lead-capture setup, but for a serious production SaaS you would normally use a protected backend, spam protection, and validation.
