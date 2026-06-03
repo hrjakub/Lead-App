@@ -3,361 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InstantLead AI | Never Miss a Lead Again</title>
-  <meta name="description" content="InstantLead AI responds to website visitors instantly, qualifies leads, and helps local businesses book more appointments." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="InstantLead AI captures, qualifies, and routes website leads automatically using an AI-powered assistant." />
+  <meta name="theme-color" content="#07111f" />
+  <title>InstantLead AI | Turn Website Visitors Into Qualified Leads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=4.0.0" />
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav container">
-      <a class="logo" href="#top" aria-label="InstantLead AI home">
-        <span class="logo-mark" aria-hidden="true">
-          <span class="logo-monogram">IL</span>
+  <div class="site-shell" data-version="InstantLead AI V4">
+    <header class="topbar" id="top">
+      <a class="brand" href="#top" aria-label="InstantLead AI home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="img">
+            <path d="M24 5.5c10.2 0 18.5 7.4 18.5 16.6 0 5.4-2.9 10.2-7.4 13.2l1.2 6.5-7-3.6c-1.7.4-3.4.6-5.3.6-10.2 0-18.5-7.4-18.5-16.7S13.8 5.5 24 5.5Z" />
+            <path d="M16 23.5h10.7c2.9 0 5.3-2.3 5.3-5.2v-.2" class="mark-line" />
+            <path d="M17 29.5h14" class="mark-line" />
+            <circle cx="34.5" cy="18.5" r="3.5" class="mark-dot" />
+          </svg>
         </span>
-        <span class="logo-text">InstantLead AI</span>
+        <span>
+          <strong>InstantLead AI</strong>
+          <small>V4 Static Website</small>
+        </span>
       </a>
-      <div class="nav-links">
+
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#how-it-works">How it works</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
-        <a href="#testimonials">Results</a>
-      </div>
-      <button class="btn btn-small btn-primary open-modal" data-source="Header Get Started">Get Started</button>
-    </nav>
-  </header>
+        <a href="#lead-form">Start free</a>
+      </nav>
+    </header>
 
-  <main id="top">
-    <section class="hero container">
-      <div class="hero-copy reveal">
-        <div class="badge">AI lead response for local businesses</div>
-        <h1>Never Miss a Lead Again</h1>
-        <p class="hero-text">InstantLead AI replies to every inquiry in seconds, qualifies prospects automatically, and helps book more appointments even outside business hours.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary open-modal" data-source="Hero Start Free Trial">Start Free Trial</button>
-          <a href="#demo" class="btn btn-secondary">See Live Demo</a>
-        </div>
-        <div class="hero-stats" aria-label="Performance statistics">
-          <div>
-            <strong>&lt;30s</strong>
-            <span>Average Response Time</span>
+    <main>
+      <section class="hero section-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">AI lead capture for service businesses</p>
+          <h1>Turn website visitors into qualified leads before they leave.</h1>
+          <p class="hero-text">
+            InstantLead AI gives your website a smart assistant that asks the right questions, qualifies prospects, and sends the lead directly to your inbox or CRM.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#lead-form">Start Free Trial</a>
+            <a class="btn btn-secondary" href="#demo">View Live Demo</a>
           </div>
-          <div>
-            <strong>24/7</strong>
-            <span>Always-On Lead Capture</span>
-          </div>
-          <div>
-            <strong>3x</strong>
-            <span>More Booked Appointments</span>
+          <div class="trust-row" aria-label="Product highlights">
+            <span>Setup in 15 minutes</span>
+            <span>No coding required</span>
+            <span>24/7 lead capture</span>
           </div>
         </div>
-      </div>
 
-      <div class="hero-card reveal delay-1">
-        <div class="browser-bar">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="chat-preview">
-          <div class="chat-heading">Live AI Assistant</div>
-          <div class="message bot">Hi, thanks for reaching out. What service are you looking for?</div>
-          <div class="message user">I need an appointment this week.</div>
-          <div class="message bot">Great. I can help. What day works best for you?</div>
-          <div class="message user">Thursday afternoon.</div>
-          <div class="message bot">Perfect. I found an available slot at 16:30. Should I reserve it?</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="problem section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">The problem</p>
-        <h2>You're Losing Money Every Day</h2>
-        <p class="section-subtitle">Leads often arrive when nobody is ready to answer. That delay gives competitors the advantage.</p>
-      </div>
-      <div class="container problem-grid">
-        <article class="problem-card reveal">
-          <div class="icon icon-missed" aria-hidden="true"></div>
-          <h3>Missed Calls & Forms</h3>
-          <p>Prospects contact you after hours, during lunch, or over the weekend. Without instant follow-up, they move on.</p>
-        </article>
-        <article class="problem-card reveal delay-1">
-          <div class="icon icon-response" aria-hidden="true"></div>
-          <h3>Slow Follow-Up</h3>
-          <p>When responses arrive hours later, the lead has often already contacted another provider.</p>
-        </article>
-        <article class="problem-card reveal delay-2">
-          <div class="icon icon-roi" aria-hidden="true"></div>
-          <h3>Wasted Ad Spend</h3>
-          <p>You pay to generate demand, but delayed response times reduce conversion and lower campaign ROI.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="demo" class="demo section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Interactive live demo</p>
-        <h2>Watch the AI Turn a Visitor into a Qualified Lead</h2>
-        <p class="section-subtitle">Choose a scenario and the demo will simulate how InstantLead AI replies, qualifies the prospect, captures contact details, and sends your team a clean lead summary.</p>
-      </div>
-
-      <div class="container demo-simulator reveal delay-1">
-        <div class="demo-chat-card">
-          <div class="demo-chat-header">
+        <div class="hero-card reveal" id="demo" aria-label="InstantLead AI demo widget">
+          <div class="widget-top">
             <div>
-              <strong>InstantLead AI Demo</strong>
-              <small id="demo-scenario-label">Dental practice lead</small>
+              <span class="status-dot"></span>
+              <strong>AI Assistant</strong>
             </div>
-            <span class="status-pill">Live simulation</span>
+            <span class="version-pill">V4 live</span>
           </div>
-
-          <div class="demo-chat-body" id="demo-chat-body" aria-live="polite"></div>
-
-          <div class="demo-replies" id="demo-replies">
-            <button type="button" data-scenario="dental">Dental emergency</button>
-            <button type="button" data-scenario="realestate">Real estate inquiry</button>
-            <button type="button" data-scenario="homeservices">Home services lead</button>
+          <div class="chat-window" id="chatWindow">
+            <div class="message bot">Hi. What service are you looking for?</div>
+            <div class="message user">I need help getting more leads.</div>
+            <div class="message bot">Perfect. What type of business do you run?</div>
           </div>
+          <form class="mini-chat" id="miniChatForm">
+            <input id="miniChatInput" type="text" placeholder="Type a reply..." autocomplete="off" />
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="metrics reveal" aria-label="Performance metrics">
+        <article>
+          <strong>3x</strong>
+          <span>faster first response</span>
+        </article>
+        <article>
+          <strong>24/7</strong>
+          <span>visitor qualification</span>
+        </article>
+        <article>
+          <strong>15 min</strong>
+          <span>average installation</span>
+        </article>
+      </section>
+
+      <section class="section" id="how-it-works">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Process</p>
+          <h2>From visitor to lead in three steps.</h2>
+        </div>
+        <div class="steps">
+          <article class="step-card reveal">
+            <span>01</span>
+            <h3>Engage</h3>
+            <p>The AI assistant starts a helpful conversation instead of letting visitors browse silently and leave.</p>
+          </article>
+          <article class="step-card reveal">
+            <span>02</span>
+            <h3>Qualify</h3>
+            <p>It captures contact details, service needs, budget range, urgency, and key decision criteria.</p>
+          </article>
+          <article class="step-card reveal">
+            <span>03</span>
+            <h3>Route</h3>
+            <p>Qualified leads are sent to your email, Google Sheet, or CRM workflow for fast follow-up.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="features">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Features</p>
+          <h2>Built for simple deployment and measurable conversion.</h2>
+          <p>Use it as a lightweight static website, connect the form to Google Apps Script, and deploy through Vercel.</p>
+        </div>
+        <div class="feature-list reveal">
+          <article>
+            <h3>Smart lead form</h3>
+            <p>Captures clean lead data with validation and a clear success state.</p>
+          </article>
+          <article>
+            <h3>Google Sheets ready</h3>
+            <p>Includes an Apps Script template to store submissions directly in a spreadsheet.</p>
+          </article>
+          <article>
+            <h3>Cache-safe V4 files</h3>
+            <p>CSS and JavaScript are versioned so you can confirm the newest deployment is loading.</p>
+          </article>
+          <article>
+            <h3>Mobile responsive</h3>
+            <p>Optimized for phones, tablets, and desktop without extra frameworks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section pricing" id="pricing">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Pricing</p>
+          <h2>Simple pricing for early users.</h2>
+        </div>
+        <div class="pricing-grid">
+          <article class="price-card reveal">
+            <h3>Starter</h3>
+            <p class="price">Free</p>
+            <p>For testing the website and collecting first leads.</p>
+            <ul>
+              <li>Static landing page</li>
+              <li>Lead form</li>
+              <li>Google Sheets template</li>
+            </ul>
+            <a href="#lead-form" class="btn btn-secondary">Try Starter</a>
+          </article>
+          <article class="price-card featured reveal">
+            <span class="badge">Recommended</span>
+            <h3>Growth</h3>
+            <p class="price">Custom</p>
+            <p>For businesses that want a branded AI assistant and follow-up workflow.</p>
+            <ul>
+              <li>Custom questions</li>
+              <li>Lead qualification logic</li>
+              <li>Email or CRM routing</li>
+            </ul>
+            <a href="#lead-form" class="btn btn-primary">Request Demo</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section lead-section" id="lead-form">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Start free</p>
+          <h2>Send yourself a test lead.</h2>
+          <p>After deployment, paste your Google Apps Script web app URL inside <code>script.js</code> to connect this form to Google Sheets.</p>
         </div>
 
-        <aside class="lead-summary-card">
-          <p class="eyebrow mini">Lead summary sent to your team</p>
-          <h3 id="lead-summary-title">Waiting for conversation...</h3>
-          <div class="lead-summary-grid">
-            <div><span>Name</span><strong id="summary-name">—</strong></div>
-            <div><span>Service</span><strong id="summary-service">—</strong></div>
-            <div><span>Urgency</span><strong id="summary-urgency">—</strong></div>
-            <div><span>Preferred time</span><strong id="summary-time">—</strong></div>
-            <div class="wide"><span>Contact</span><strong id="summary-contact">—</strong></div>
-            <div class="wide hot"><span>Status</span><strong id="summary-status">—</strong></div>
+        <form class="lead-form reveal" id="leadForm">
+          <div class="form-grid">
+            <label>
+              Full name
+              <input type="text" name="name" placeholder="Your name" required />
+            </label>
+            <label>
+              Work email
+              <input type="email" name="email" placeholder="name@company.com" required />
+            </label>
+            <label>
+              Company
+              <input type="text" name="company" placeholder="Company name" required />
+            </label>
+            <label>
+              Phone / WhatsApp
+              <input type="tel" name="phone" placeholder="+33 ..." />
+            </label>
+            <label>
+              Website
+              <input type="url" name="website" placeholder="https://example.com" />
+            </label>
+            <label>
+              Monthly leads
+              <select name="monthlyLeads" required>
+                <option value="">Select range</option>
+                <option value="0-20">0-20</option>
+                <option value="21-100">21-100</option>
+                <option value="101-500">101-500</option>
+                <option value="500+">500+</option>
+              </select>
+            </label>
           </div>
-          <button class="btn btn-primary full open-modal" data-source="Demo CTA">Try this on my website</button>
-        </aside>
-      </div>
-    </section>
-
-    <section id="features" class="features section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">The solution</p>
-        <h2>Meet Your AI Assistant That Never Sleeps</h2>
-        <p class="section-subtitle">A simple front-office automation layer for local service businesses.</p>
-      </div>
-      <div class="container features-grid">
-        <article class="feature-card reveal">
-          <span>1</span>
-          <h3>Instant Response</h3>
-          <p>Replies to website forms, emails, and messages in seconds.</p>
-        </article>
-        <article class="feature-card reveal delay-1">
-          <span>2</span>
-          <h3>Smart Qualification</h3>
-          <p>Asks targeted questions to separate serious prospects from low-value inquiries.</p>
-        </article>
-        <article class="feature-card reveal delay-2">
-          <span>3</span>
-          <h3>FAQ Handling</h3>
-          <p>Answers common questions about services, pricing, hours, and location.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span>4</span>
-          <h3>Appointment Booking</h3>
-          <p>Guides qualified leads toward a call, visit, or consultation.</p>
-        </article>
-        <article class="feature-card reveal delay-1">
-          <span>5</span>
-          <h3>24/7 Coverage</h3>
-          <p>Works continuously, including evenings, weekends, and holidays.</p>
-        </article>
-        <article class="feature-card reveal delay-2">
-          <span>6</span>
-          <h3>Dynamic Lead Sheet</h3>
-          <p>Free trial and contact form submissions can be sent directly into your live spreadsheet.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="pricing" class="pricing section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Pricing</p>
-        <h2>Simple, Transparent Pricing</h2>
-        <p class="section-subtitle">No complicated onboarding. No long-term commitment.</p>
-      </div>
-      <div class="container pricing-grid">
-        <article class="pricing-card reveal">
-          <h3>Setup + Monthly</h3>
-          <div class="price-row">
-            <span class="price">$200</span>
-            <span>one-time setup</span>
-          </div>
-          <div class="monthly">$200/mo</div>
-          <ul>
-            <li>Custom AI training</li>
-            <li>24/7 response system</li>
-            <li>Lead qualification</li>
-            <li>Appointment booking flow</li>
-            <li>Daily lead summaries</li>
-            <li>Email and form integration</li>
-            <li>Priority support</li>
-          </ul>
-          <button class="btn btn-secondary open-modal" data-source="Pricing Setup Monthly">Get Started</button>
-        </article>
-        <article class="pricing-card featured reveal delay-1">
-          <div class="popular">Most Popular</div>
-          <h3>Simple Monthly</h3>
-          <div class="price-row">
-            <span class="price">$50/mo</span>
-          </div>
-          <div class="monthly">No setup fee - Cancel anytime</div>
-          <ul>
-            <li>Custom AI training included</li>
-            <li>24/7 instant response</li>
-            <li>Lead qualification and routing</li>
-            <li>Daily summaries by email</li>
-            <li>No long-term contract</li>
-            <li>Ideal for testing ROI</li>
-          </ul>
-          <button class="btn btn-primary open-modal" data-source="Pricing Simple Monthly">Start Today</button>
-        </article>
-      </div>
-      <div class="container center quick-note reveal"><span aria-hidden="true"></span>Quick setup: live in 24 hours from $50/month.</div>
-    </section>
-
-    <section id="testimonials" class="testimonials section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Results</p>
-        <h2>Real Results from Real Businesses</h2>
-        <p class="section-subtitle">Examples of how faster response can improve lead capture.</p>
-      </div>
-      <div class="container testimonial-grid">
-        <article class="testimonial reveal">
-          <p>“We stopped losing after-hours inquiries and started converting conversations into booked appointments.”</p>
-          <div class="person"><span>DR</span><div><strong>Dr. Rachel Martinez</strong><small>Smile Bright Dental</small></div></div>
-        </article>
-        <article class="testimonial reveal delay-1">
-          <p>“It feels like having a receptionist that works all day and never lets a prospect wait.”</p>
-          <div class="person"><span>JT</span><div><strong>James Thompson</strong><small>Thompson Home Services</small></div></div>
-        </article>
-        <article class="testimonial reveal delay-2">
-          <p>“The value is obvious. Our team spends less time chasing cold leads and more time closing warm ones.”</p>
-          <div class="person"><span>SK</span><div><strong>Sarah Kim</strong><small>Elite Realty Group</small></div></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="final-cta section-padding">
-      <div class="container center reveal">
-        <h2>Stop Losing Leads Today</h2>
-        <p>Capture more opportunities with instant AI follow-up.</p>
-        <button class="btn btn-light open-modal" data-source="Final CTA Free Trial">Start Your Free Trial Now</button>
-        <small>Setup in 24 hours - From $50/month - Cancel anytime</small>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-inner">
-      <p>© 2026 InstantLead AI. All rights reserved.</p>
-      <p>Built for local businesses that value every lead.</p>
-    </div>
-  </footer>
-
-  <button class="floating-chat" aria-label="Open chat demo">
-    <span class="chat-button-icon" aria-hidden="true"></span>
-  </button>
-
-  <div class="chat-widget" aria-live="polite">
-    <div class="chat-widget-header">
-      <div>
-        <strong>InstantLead AI</strong>
-        <small>Lead capture assistant</small>
-      </div>
-      <button class="close-chat" aria-label="Close chat widget">×</button>
-    </div>
-    <div class="chat-widget-body">
-      <div class="message bot">Hi. I’m InstantLead AI. Tell me what kind of business you run and I’ll qualify the lead like a real assistant.</div>
-    </div>
-    <div class="chat-widget-actions" id="chat-suggestions" aria-label="Quick chat options">
-      <button type="button" data-chat-prompt="I run a dental practice">Dental</button>
-      <button type="button" data-chat-prompt="I run a real estate agency">Real estate</button>
-      <button type="button" data-chat-prompt="I run a home services company">Home services</button>
-    </div>
-    <div class="chat-widget-input">
-      <input type="text" placeholder="Type a message..." aria-label="Chat message" />
-      <button type="button">Send</button>
-    </div>
-  </div>
-
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-backdrop close-modal"></div>
-    <div class="modal-card">
-      <button class="modal-close close-modal" aria-label="Close signup form">×</button>
-      <div class="form-view">
-        <h2 id="modal-title">Start Your Free Trial</h2>
-        <p>Submit your details and they will be prepared for your connected lead spreadsheet.</p>
-        <form id="lead-form">
-          <input type="hidden" name="source" id="lead-source" value="Website form" />
-          <input type="hidden" name="source_button" id="source-button" value="Website form" />
-          <input type="hidden" name="timestamp" id="lead-timestamp" />
-          <input type="hidden" name="page_url" id="page-url" />
-          <input type="hidden" name="user_agent" id="user-agent" />
-
-          <label>Company *<input name="company" type="text" autocomplete="organization" required /></label>
-          <label>Business Type *
-            <select name="business_type" required>
-              <option value="">Select business type</option>
-              <option>Dental Practice</option>
-              <option>Medical Practice</option>
-              <option>Med Spa</option>
-              <option>Real Estate</option>
-              <option>Home Services</option>
-              <option>Coaching / Consulting</option>
-              <option>Other</option>
-            </select>
-            <div class="other-business-field" id="other-business-field" hidden>
-              <input name="business_type_other" id="business-type-other" type="text" placeholder="Type your business type (optional)" autocomplete="off" />
-            </div>
+          <label>
+            What should the AI assistant help you with?
+            <textarea name="message" rows="5" placeholder="Example: qualify real estate leads, cleaning service bookings, restaurant enquiries..."></textarea>
           </label>
-          <label>Your Full Name *<input name="name" type="text" autocomplete="name" required /></label>
-          <label>Email Address *<input name="email" type="email" autocomplete="email" required /></label>
-          <label>Phone Number *
-            <div class="phone-field">
-              <select name="phone_country_iso" id="phone-country" aria-label="Country calling code"></select>
-              <input name="phone_local" id="phone-local" type="tel" autocomplete="tel-national" required />
-            </div>
-            <input name="phone" id="phone-full" type="hidden" />
-          </label>
-          <label>Website URL<input name="website" type="url" placeholder="https://" /></label>
-          <label>Preferred Plan *
-            <select name="plan" required>
-              <option value="">Choose a plan</option>
-              <option>Setup + $200/month</option>
-              <option>$50/month - Most Popular</option>
-              <option>Not sure yet</option>
-            </select>
-          </label>
-          <label>Preferred Contact Method
-            <select name="contact_preference">
-              <option>Email</option>
-              <option>Phone</option>
-              <option>WhatsApp</option>
-            </select>
-          </label>
-          <label class="field-full">Tell us about your lead volume<textarea name="volume" rows="3" placeholder="Example: 30-50 inquiries per month, mostly from Google Ads"></textarea></label>
-          <label class="field-full">Message *<textarea name="message" rows="3" placeholder="Anything specific you want the AI to handle?" required></textarea></label>
-          <button class="btn btn-primary full" type="submit">Start Free Trial</button>
-          <p class="form-note" id="form-note">Connect the Google Apps Script URL in <code>script.js</code> to store submissions in a live spreadsheet.</p>
-          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
+          <button class="btn btn-primary" type="submit">Submit Test Lead</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
-      </div>
-      <div class="success-view">
-        <div class="success-icon" aria-hidden="true"></div>
-        <h2>Submission received</h2>
-        <p id="success-message">Thank you. Your details have been captured.</p>
-        <button class="btn btn-primary close-modal">Close</button>
-      </div>
-    </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> InstantLead AI. Static V4 build.</p>
+      <a href="#top">Back to top</a>
+    </footer>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=4.0.0" defer></script>
 </body>
 </html>
