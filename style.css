@@ -69,20 +69,62 @@ a {
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  gap: 12px;
+  color: #0f172a;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .logo-mark {
+  position: relative;
   display: inline-grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
+  isolation: isolate;
+  overflow: hidden;
+  width: 42px;
+  height: 42px;
+  border-radius: 15px;
   color: white;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.45), transparent 24%),
+    linear-gradient(145deg, #0f172a 0%, var(--blue) 48%, var(--cyan) 100%);
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.28);
+}
+
+.logo-mark::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.logo-mark::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  bottom: 9px;
+  width: 17px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  transform: rotate(-28deg);
+}
+
+.logo-monogram {
+  position: relative;
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.logo-text {
+  font-size: 19px;
+  line-height: 1;
 }
 
 .nav-links {

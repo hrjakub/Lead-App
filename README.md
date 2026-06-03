@@ -1,4 +1,4 @@
-# InstantLead AI Static Website - V3.1
+# InstantLead AI Static Website - V3.2
 
 InstantLead AI is a simple static website prototype for an AI lead-capture service. It is designed to be deployed from GitHub to Vercel without React, Next.js, Node.js, npm, or any build step.
 
@@ -99,6 +99,7 @@ Vercel will redeploy automatically after you commit the updated files in GitHub.
 - **V2**: Added stronger live demo structure and lead form preparation.
 - **V3**: Added realistic demo scenarios, lead summary card, floating chatbot, and Google Apps Script instructions.
 - **V3.1**: Improved lead field alignment, source-button tracking, timestamp capture, chatbot lead qualification, inline form error handling, and Apps Script compatibility.
+- **V3.2**: Added the polished IL logo mark, international phone country selector with flags, custom "Other" business type field, and connected Google Apps Script endpoint.
 
 ## Important notes
 
