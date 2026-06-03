@@ -783,6 +783,22 @@ textarea:focus {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
+.phone-field {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.9fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.phone-field select,
+.phone-field input {
+  min-width: 0;
+}
+
+.phone-field select {
+  cursor: pointer;
+  font-weight: 800;
+}
+
 .success-view {
   display: none;
   text-align: center;
@@ -900,6 +916,10 @@ textarea:focus {
 
   label {
     grid-column: 1 / -1;
+  }
+
+  .phone-field {
+    grid-template-columns: 1fr;
   }
 
   h1 {

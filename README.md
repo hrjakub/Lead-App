@@ -30,6 +30,8 @@ The form and chatbot send these core fields:
 - Full name
 - Email
 - Phone
+- Phone country code
+- Phone country
 - Business type
 - Company
 - Message

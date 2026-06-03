@@ -314,7 +314,13 @@
           </label>
           <label>Your Full Name *<input name="name" type="text" autocomplete="name" required /></label>
           <label>Email Address *<input name="email" type="email" autocomplete="email" required /></label>
-          <label>Phone Number *<input name="phone" type="tel" autocomplete="tel" required /></label>
+          <label>Phone Number *
+            <div class="phone-field">
+              <select name="phone_country_iso" id="phone-country" aria-label="Country calling code"></select>
+              <input name="phone_local" id="phone-local" type="tel" autocomplete="tel-national" required />
+            </div>
+            <input name="phone" id="phone-full" type="hidden" />
+          </label>
           <label>Website URL<input name="website" type="url" placeholder="https://" /></label>
           <label>Preferred Plan *
             <select name="plan" required>
