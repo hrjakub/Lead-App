@@ -15,6 +15,9 @@ const userAgent = document.querySelector('#user-agent');
 const formNote = document.querySelector('#form-note');
 const formStatus = document.querySelector('#form-status');
 const successMessage = document.querySelector('#success-message');
+const businessTypeSelect = document.querySelector('select[name="business_type"]');
+const otherBusinessField = document.querySelector('#other-business-field');
+const otherBusinessInput = document.querySelector('#business-type-other');
 const phoneCountrySelect = document.querySelector('#phone-country');
 const phoneLocalInput = document.querySelector('#phone-local');
 const phoneFullInput = document.querySelector('#phone-full');
@@ -454,6 +457,28 @@ function updatePhoneFields() {
   phoneFullInput.value = fullPhone;
 }
 
+function isOtherBusinessSelected() {
+  return businessTypeSelect?.value === 'Other';
+}
+
+function updateOtherBusinessField() {
+  if (!otherBusinessField || !otherBusinessInput) return;
+
+  const showField = isOtherBusinessSelected();
+  otherBusinessField.hidden = !showField;
+
+  if (!showField) {
+    otherBusinessInput.value = '';
+  }
+}
+
+function getBusinessTypeFromForm(formData) {
+  const selectedType = firstFormValue(formData, ['business_type', 'industry']);
+  const otherType = firstFormValue(formData, ['business_type_other']);
+
+  return selectedType === 'Other' && otherType ? otherType : selectedType;
+}
+
 function prefillPhoneField(phone) {
   if (!phoneLocalInput || !phoneCountrySelect) return;
 
@@ -542,6 +567,8 @@ function prefillLeadForm(data = {}) {
 
   if (data.company && fields.company) fields.company.value = data.company;
   if (businessType && fields.business_type) setSelectByText(fields.business_type, businessType);
+  if (businessType === 'Other' && data.business_type && fields.business_type_other) fields.business_type_other.value = data.business_type;
+  updateOtherBusinessField();
   if (data.name && fields.name) fields.name.value = data.name;
   if (data.email && fields.email) fields.email.value = data.email;
   if (data.phone) prefillPhoneField(data.phone);
@@ -567,6 +594,7 @@ function closeModal() {
   document.body.style.overflow = '';
   form.reset();
   setTrackingFields('Website form');
+  updateOtherBusinessField();
   setPhoneCountryByIso(DEFAULT_PHONE_COUNTRY_ISO);
   updatePhoneFields();
   setFormStatus('', '');
@@ -584,7 +612,7 @@ function firstFormValue(formData, names) {
 function normalizeLeadFormData(formData) {
   const timestamp = firstFormValue(formData, ['timestamp', 'submitted_at']) || new Date().toISOString();
   const company = firstFormValue(formData, ['company', 'business', 'business_name']);
-  const businessType = firstFormValue(formData, ['business_type', 'industry']);
+  const businessType = getBusinessTypeFromForm(formData);
   const source = firstFormValue(formData, ['source_button', 'source']) || 'Website form';
   const message = firstFormValue(formData, ['message']);
   const phoneCountry = selectedPhoneCountry();
@@ -681,6 +709,8 @@ form.addEventListener('submit', async (event) => {
 
 updateFormNote();
 setTrackingFields('Website form');
+updateOtherBusinessField();
+businessTypeSelect?.addEventListener('change', updateOtherBusinessField);
 populatePhoneCountryOptions();
 updatePhoneFields();
 phoneCountrySelect?.addEventListener('change', updatePhoneFields);
