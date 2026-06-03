@@ -1,85 +1,105 @@
-# InstantLead AI Static Website — V3
+# InstantLead AI Static Website - V3.1
 
-This version includes:
+InstantLead AI is a simple static website prototype for an AI lead-capture service. It is designed to be deployed from GitHub to Vercel without React, Next.js, Node.js, npm, or any build step.
 
-- A more realistic interactive live demo conversation
-- Scenario buttons for dental, real estate, and home services leads
-- A stronger lead summary card showing what the business receives
-- A free trial / get started form prepared for spreadsheet capture
-- Google Sheets integration using Google Apps Script
+## How the project works
 
-## Files
+- `index.html` contains the landing page, pricing section, demo simulator, floating chatbot, and lead form modal.
+- `style.css` controls the full visual design, responsive layout, modal, demo chat, and chatbot styling.
+- `script.js` powers the CTA buttons, pricing buttons, modal form, chatbot flow, demo scenarios, form validation, success messages, and Google Apps Script submission.
+- `google-apps-script.gs` is pasted into a Google Sheet Apps Script project and deployed as a Web App. It receives form/chat submissions and appends rows to a `Leads` sheet.
+- `vercel.json` keeps the static Vercel deployment clean with clean URLs and no trailing slash.
 
-- `index.html` — website structure
-- `style.css` — styling
-- `script.js` — demo logic + form submission logic
-- `google-apps-script.gs` — paste this into Google Apps Script to connect the form to a spreadsheet
-- `vercel.json` — static Vercel routing config
+## Current connection status
 
-## Deploy update to Vercel
-
-1. Upload these files to the existing GitHub repository.
-2. Replace the old files.
-3. Click **Commit changes**.
-4. Vercel will automatically redeploy.
-
-## Connect the form to a live spreadsheet
-
-The easiest beginner setup is Google Sheets. You can export the sheet to Excel any time.
-
-### Step 1 — Create the Google Sheet
-
-1. Open Google Sheets.
-2. Create a new blank spreadsheet.
-3. Name it: `InstantLead AI Leads`.
-
-### Step 2 — Add the Apps Script code
-
-1. In the Google Sheet, go to **Extensions → Apps Script**.
-2. Delete any starter code.
-3. Paste the full code from `google-apps-script.gs`.
-4. Save the project.
-
-### Step 3 — Deploy as a Web App
-
-1. Click **Deploy → New deployment**.
-2. Select **Web app**.
-3. Set **Execute as** to `Me`.
-4. Set **Who has access** to `Anyone`.
-5. Click **Deploy**.
-6. Copy the Web App URL. It should end with `/exec`.
-
-### Step 4 — Paste the URL into the website
-
-1. Open `script.js`.
-2. Find this line:
+The website is connected to a Google Apps Script Web App through this line in `script.js`:
 
 ```js
-const GOOGLE_SHEET_WEB_APP_URL = "";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzxMqn_LrJQ75ifItGRnSlgMe1Zui6SZSHnEDkFiNpnPbWZHuJvEG7b3UF4aJ3dvhzWfQ/exec";
 ```
 
-3. Paste your URL inside the quotes:
+Form and chatbot submissions are posted to Google Apps Script. If the URL is removed or left blank, the site falls back to demo mode and logs the prepared lead payload in the browser console.
 
-```js
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/YOUR_ID_HERE/exec";
-```
+Because the static site uses `fetch(..., { mode: "no-cors" })`, the browser cannot read the Apps Script response. After testing, confirm success by checking for a new row in the Google Sheet.
 
-4. Commit the updated `script.js` to GitHub.
-5. Vercel will redeploy.
+## Lead data captured
 
-## Test
+The form and chatbot send these core fields:
 
-1. Open your live Vercel website.
-2. Click **Start Free Trial** or **Get Started**.
-3. Submit a test lead.
-4. Open your Google Sheet.
-5. A new row should appear with the lead information.
+- Timestamp
+- Full name
+- Email
+- Phone
+- Business type
+- Company
+- Message
+- Source button
 
-## Important
+They also send useful context:
 
-Do not paste private API keys into this static website. The Google Apps Script URL is okay for this simple lead-capture setup, but for a serious production SaaS you would normally use a protected backend, spam protection, and validation.
+- Preferred plan
+- Preferred contact method
+- Lead volume
+- Website URL
+- Page URL
+- User agent
 
+## Connect Google Sheets
 
-## V3 chatbot update
+1. Open Google Sheets and create a spreadsheet named `InstantLead AI Leads`.
+2. Go to **Extensions > Apps Script**.
+3. Delete any starter code.
+4. Paste the full code from `google-apps-script.gs`.
+5. Save the Apps Script project.
+6. Click **Deploy > New deployment**.
+7. Choose **Web app**.
+8. Set **Execute as** to `Me`.
+9. Set **Who has access** to `Anyone`.
+10. Click **Deploy** and copy the Web App URL ending in `/exec`.
+11. Replace the existing `GOOGLE_SHEET_WEB_APP_URL` in `script.js` if you deploy a new Apps Script Web App URL.
+12. Upload the updated files to GitHub and let Vercel redeploy.
 
-The floating chatbot now runs a realistic lead-qualification simulation instead of only giving generic keyword replies. It asks for business type, visitor need, urgency, name, contact details, and preferred time, then creates a structured lead summary. If the Google Sheets endpoint is connected, completed chat leads can also be sent to the spreadsheet.
+## Test checklist
+
+1. Open the local or deployed website.
+2. Click **Start Free Trial**, **Get Started**, **Start Today**, and the final CTA to confirm each opens the lead form.
+3. Submit a test form lead.
+4. Open the floating chat, complete the lead-capture conversation, and confirm it reaches the summary step.
+5. If the Apps Script URL is connected, check the Google Sheet for new rows.
+6. Test mobile width to confirm the modal, pricing cards, and chat widget remain usable.
+
+## Deployment
+
+This is a static site. Deploy by uploading these files to the GitHub repository connected to Vercel:
+
+- `index.html`
+- `style.css`
+- `script.js`
+- `google-apps-script.gs`
+- `vercel.json`
+- `README.md`
+
+Vercel will redeploy automatically after you commit the updated files in GitHub.
+
+## Tools used
+
+- HTML
+- CSS
+- Vanilla JavaScript
+- Google Apps Script
+- Google Sheets
+- GitHub
+- Vercel
+
+## Version history
+
+- **V1**: Initial static landing page prototype.
+- **V2**: Added stronger live demo structure and lead form preparation.
+- **V3**: Added realistic demo scenarios, lead summary card, floating chatbot, and Google Apps Script instructions.
+- **V3.1**: Improved lead field alignment, source-button tracking, timestamp capture, chatbot lead qualification, inline form error handling, and Apps Script compatibility.
+
+## Important notes
+
+- Do not add `package.json`, npm, React, Next.js, or a build setup.
+- Do not paste private API keys into this static website.
+- The Google Apps Script URL is acceptable for this simple prototype, but a production SaaS should also use spam protection, stronger validation, and a protected backend.

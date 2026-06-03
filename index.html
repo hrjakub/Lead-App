@@ -267,16 +267,21 @@
     <div class="chat-widget-header">
       <div>
         <strong>InstantLead AI</strong>
-        <small>Lead qualification demo</small>
+        <small>Lead capture assistant</small>
       </div>
       <button class="close-chat" aria-label="Close chat widget">×</button>
     </div>
     <div class="chat-widget-body">
-      <div class="message bot">Hi. I’m InstantLead AI. I can simulate a real lead-qualification conversation for your business.</div>
+      <div class="message bot">Hi. I’m InstantLead AI. Tell me what kind of business you run and I’ll qualify the lead like a real assistant.</div>
+    </div>
+    <div class="chat-widget-actions" id="chat-suggestions" aria-label="Quick chat options">
+      <button type="button" data-chat-prompt="I run a dental practice">Dental</button>
+      <button type="button" data-chat-prompt="I run a real estate agency">Real estate</button>
+      <button type="button" data-chat-prompt="I run a home services company">Home services</button>
     </div>
     <div class="chat-widget-input">
-      <input type="text" placeholder="Type a message..." />
-      <button>Send</button>
+      <input type="text" placeholder="Type a message..." aria-label="Chat message" />
+      <button type="button">Send</button>
     </div>
   </div>
 
@@ -286,16 +291,18 @@
       <button class="modal-close close-modal" aria-label="Close signup form">×</button>
       <div class="form-view">
         <h2 id="modal-title">Start Your Free Trial</h2>
-        <p>Submit your details and they will be sent directly into your connected lead spreadsheet.</p>
+        <p>Submit your details and they will be prepared for your connected lead spreadsheet.</p>
         <form id="lead-form">
           <input type="hidden" name="source" id="lead-source" value="Website form" />
+          <input type="hidden" name="source_button" id="source-button" value="Website form" />
+          <input type="hidden" name="timestamp" id="lead-timestamp" />
           <input type="hidden" name="page_url" id="page-url" />
           <input type="hidden" name="user_agent" id="user-agent" />
 
-          <label>Business Name *<input name="business" type="text" required /></label>
-          <label>Industry *
-            <select name="industry" required>
-              <option value="">Select your industry</option>
+          <label>Company *<input name="company" type="text" autocomplete="organization" required /></label>
+          <label>Business Type *
+            <select name="business_type" required>
+              <option value="">Select business type</option>
               <option>Dental Practice</option>
               <option>Medical Practice</option>
               <option>Med Spa</option>
@@ -305,15 +312,15 @@
               <option>Other</option>
             </select>
           </label>
-          <label>Your Full Name *<input name="name" type="text" required /></label>
-          <label>Email Address *<input name="email" type="email" required /></label>
-          <label>Phone Number *<input name="phone" type="tel" required /></label>
+          <label>Your Full Name *<input name="name" type="text" autocomplete="name" required /></label>
+          <label>Email Address *<input name="email" type="email" autocomplete="email" required /></label>
+          <label>Phone Number *<input name="phone" type="tel" autocomplete="tel" required /></label>
           <label>Website URL<input name="website" type="url" placeholder="https://" /></label>
           <label>Preferred Plan *
             <select name="plan" required>
               <option value="">Choose a plan</option>
               <option>Setup + $200/month</option>
-              <option>$50/month — Most Popular</option>
+              <option>$50/month - Most Popular</option>
               <option>Not sure yet</option>
             </select>
           </label>
@@ -324,16 +331,17 @@
               <option>WhatsApp</option>
             </select>
           </label>
-          <label>Tell us about your lead volume<textarea name="volume" rows="3" placeholder="Example: 30-50 inquiries per month, mostly from Google Ads"></textarea></label>
-          <label>Message<textarea name="message" rows="3" placeholder="Anything specific you want the AI to handle?"></textarea></label>
+          <label class="field-full">Tell us about your lead volume<textarea name="volume" rows="3" placeholder="Example: 30-50 inquiries per month, mostly from Google Ads"></textarea></label>
+          <label class="field-full">Message *<textarea name="message" rows="3" placeholder="Anything specific you want the AI to handle?" required></textarea></label>
           <button class="btn btn-primary full" type="submit">Start Free Trial</button>
           <p class="form-note" id="form-note">Connect the Google Apps Script URL in <code>script.js</code> to store submissions in a live spreadsheet.</p>
+          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
         </form>
       </div>
       <div class="success-view">
         <div class="success-icon">✓</div>
         <h2>Submission received</h2>
-        <p>Thank you. Your details have been captured. If your spreadsheet endpoint is connected, this lead has also been added to your live sheet.</p>
+        <p id="success-message">Thank you. Your details have been captured.</p>
         <button class="btn btn-primary close-modal">Close</button>
       </div>
     </div>

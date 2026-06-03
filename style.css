@@ -651,6 +651,29 @@ h3 {
   display: none;
 }
 
+.chat-widget-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+.chat-widget-actions button {
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: var(--blue);
+  background: rgba(37, 99, 235, 0.07);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.chat-widget-actions button:hover {
+  color: white;
+  background: var(--blue);
+}
+
 .chat-widget-input {
   display: flex;
   gap: 8px;
@@ -674,6 +697,11 @@ h3 {
   background: var(--blue);
   font-weight: 800;
   cursor: pointer;
+}
+
+.chat-widget-input button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .modal {
@@ -731,9 +759,7 @@ label {
   font-weight: 800;
 }
 
-label:nth-child(1),
-label:nth-child(7),
-label:nth-child(8),
+.field-full,
 form button {
   grid-column: 1 / -1;
 }
@@ -1069,16 +1095,45 @@ textarea:focus {
   background: #f1f5f9;
 }
 
-/* Override original form layout now that hidden fields were added */
+.form-status {
+  grid-column: 1 / -1;
+  margin: -4px 0 0;
+  border-radius: 14px;
+  padding: 11px 13px;
+  color: #334155;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-status[data-state="error"] {
+  color: #991b1b;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.form-status[data-state="success"] {
+  color: #166534;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.form-status[data-state="pending"] {
+  color: #1d4ed8;
+  background: rgba(37, 99, 235, 0.07);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+/* Keep the form grid stable now that hidden fields are used for tracking. */
 form label {
   grid-column: auto;
 }
 
-form label:first-of-type,
-form label:nth-of-type(9),
-form label:nth-of-type(10),
+.field-full,
 form button,
-.form-note {
+.form-note,
+.form-status {
   grid-column: 1 / -1;
 }
 
@@ -1109,11 +1164,10 @@ form button,
   }
 
   form label,
-  form label:first-of-type,
-  form label:nth-of-type(9),
-  form label:nth-of-type(10),
+  .field-full,
   form button,
-  .form-note {
+  .form-note,
+  .form-status {
     grid-column: 1 / -1;
   }
 }

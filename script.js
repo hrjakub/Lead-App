@@ -8,14 +8,21 @@ const openModalButtons = document.querySelectorAll('.open-modal');
 const closeModalButtons = document.querySelectorAll('.close-modal');
 const form = document.querySelector('#lead-form');
 const leadSource = document.querySelector('#lead-source');
+const sourceButton = document.querySelector('#source-button');
+const leadTimestamp = document.querySelector('#lead-timestamp');
 const pageUrl = document.querySelector('#page-url');
 const userAgent = document.querySelector('#user-agent');
+const formNote = document.querySelector('#form-note');
+const formStatus = document.querySelector('#form-status');
+const successMessage = document.querySelector('#success-message');
+
 const floatingChat = document.querySelector('.floating-chat');
 const chatWidget = document.querySelector('.chat-widget');
 const closeChat = document.querySelector('.close-chat');
+const chatWidgetBody = document.querySelector('.chat-widget-body');
+const chatSuggestions = document.querySelector('#chat-suggestions');
 const chatInput = document.querySelector('.chat-widget-input input');
 const chatSend = document.querySelector('.chat-widget-input button');
-const formNote = document.querySelector('#form-note');
 
 const demoChatBody = document.querySelector('#demo-chat-body');
 const demoReplies = document.querySelector('#demo-replies');
@@ -46,10 +53,10 @@ const scenarios = {
       title: 'Hot dental lead captured',
       name: 'Emma Martin',
       service: 'Emergency dental appointment',
-      urgency: 'High — severe tooth pain',
+      urgency: 'High - severe tooth pain',
       time: 'Tomorrow, 09:30',
       contact: '+44 7700 900321',
-      status: 'Hot lead — call immediately'
+      status: 'Hot lead - call immediately'
     }
   },
   realestate: {
@@ -69,10 +76,10 @@ const scenarios = {
       title: 'Qualified buyer lead captured',
       name: 'Daniel Novak',
       service: 'Apartment purchase inquiry',
-      urgency: 'Medium-high — bank already contacted',
+      urgency: 'Medium-high - bank already contacted',
       time: 'Friday afternoon viewing',
       contact: 'daniel@example.com',
-      status: 'Qualified lead — assign to agent'
+      status: 'Qualified lead - assign to agent'
     }
   },
   homeservices: {
@@ -92,19 +99,121 @@ const scenarios = {
       title: 'Urgent repair lead captured',
       name: 'Laura Green',
       service: 'Boiler repair',
-      urgency: 'High — no heating or hot water',
+      urgency: 'High - no heating or hot water',
       time: 'Today after 15:00',
-      contact: '+44 7700 900987 • SW6',
-      status: 'Urgent lead — dispatch technician'
+      contact: '+44 7700 900987 - SW6',
+      status: 'Urgent lead - dispatch technician'
     }
   }
 };
 
-function openModal(event) {
-  const source = event?.currentTarget?.dataset?.source || event?.currentTarget?.textContent?.trim() || 'Website form';
-  leadSource.value = source;
+const widgetState = {
+  stage: 'business_type',
+  data: {},
+  isResponding: false
+};
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getSheetUrl() {
+  return GOOGLE_SHEET_WEB_APP_URL.trim();
+}
+
+function hasSheetEndpoint() {
+  return getSheetUrl().length > 0;
+}
+
+function setFormStatus(state, message) {
+  if (!formStatus) return;
+
+  if (!message) {
+    formStatus.hidden = true;
+    formStatus.removeAttribute('data-state');
+    formStatus.textContent = '';
+    return;
+  }
+
+  formStatus.hidden = false;
+  formStatus.dataset.state = state;
+  formStatus.textContent = message;
+}
+
+function updateFormNote() {
+  if (!formNote) return;
+
+  formNote.textContent = hasSheetEndpoint()
+    ? 'Submissions are configured to post to your Google Apps Script Web App. Check the Google Sheet after testing because the browser cannot read no-cors responses.'
+    : 'Demo mode: add your Google Apps Script Web App URL in script.js to store submissions in a live spreadsheet.';
+}
+
+function setTrackingFields(source) {
+  const value = source || 'Website form';
+  const timestamp = new Date().toISOString();
+
+  leadSource.value = value;
+  sourceButton.value = value;
+  leadTimestamp.value = timestamp;
   pageUrl.value = window.location.href;
   userAgent.value = navigator.userAgent;
+}
+
+function setSelectByText(select, value) {
+  if (!select || !value) return;
+
+  const normalizedValue = value.toLowerCase();
+  const option = Array.from(select.options).find((item) => item.textContent.toLowerCase() === normalizedValue);
+  if (option) select.value = option.value;
+}
+
+function businessTypeToFormOption(value = '') {
+  const lower = value.toLowerCase();
+
+  if (lower.includes('dental') || lower.includes('dentist')) return 'Dental Practice';
+  if (lower.includes('medical') || lower.includes('clinic') || lower.includes('doctor')) return 'Medical Practice';
+  if (lower.includes('med spa') || lower.includes('spa')) return 'Med Spa';
+  if (lower.includes('real') || lower.includes('estate') || lower.includes('property')) return 'Real Estate';
+  if (lower.includes('home') || lower.includes('plumb') || lower.includes('repair') || lower.includes('hvac')) return 'Home Services';
+  if (lower.includes('coach') || lower.includes('consult')) return 'Coaching / Consulting';
+
+  return value ? 'Other' : '';
+}
+
+function setPlanFromSource(source) {
+  const planSelect = form.elements.plan;
+
+  if (source.includes('Pricing Simple Monthly')) {
+    setSelectByText(planSelect, '$50/month - Most Popular');
+  } else if (source.includes('Pricing Setup Monthly')) {
+    setSelectByText(planSelect, 'Setup + $200/month');
+  }
+}
+
+function prefillLeadForm(data = {}) {
+  if (!form) return;
+
+  const fields = form.elements;
+  const businessType = businessTypeToFormOption(data.business_type || data.businessType || '');
+
+  if (data.company && fields.company) fields.company.value = data.company;
+  if (businessType && fields.business_type) setSelectByText(fields.business_type, businessType);
+  if (data.name && fields.name) fields.name.value = data.name;
+  if (data.email && fields.email) fields.email.value = data.email;
+  if (data.phone && fields.phone) fields.phone.value = data.phone;
+  if (data.message && fields.message) fields.message.value = data.message;
+}
+
+function openModal(eventOrSource, prefillData = {}) {
+  const source = typeof eventOrSource === 'string'
+    ? eventOrSource
+    : eventOrSource?.currentTarget?.dataset?.source || eventOrSource?.currentTarget?.textContent?.trim() || 'Website form';
+
+  modal.classList.remove('success');
+  setFormStatus('', '');
+  setTrackingFields(source);
+  setPlanFromSource(source);
+  prefillLeadForm(prefillData);
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -113,7 +222,65 @@ function closeModal() {
   modal.classList.remove('open', 'success');
   document.body.style.overflow = '';
   form.reset();
-  leadSource.value = 'Website form';
+  setTrackingFields('Website form');
+  setFormStatus('', '');
+  updateFormNote();
+}
+
+function firstFormValue(formData, names) {
+  for (const name of names) {
+    const value = String(formData.get(name) || '').trim();
+    if (value) return value;
+  }
+  return '';
+}
+
+function normalizeLeadFormData(formData) {
+  const timestamp = firstFormValue(formData, ['timestamp', 'submitted_at']) || new Date().toISOString();
+  const company = firstFormValue(formData, ['company', 'business', 'business_name']);
+  const businessType = firstFormValue(formData, ['business_type', 'industry']);
+  const source = firstFormValue(formData, ['source_button', 'source']) || 'Website form';
+  const message = firstFormValue(formData, ['message']);
+
+  formData.set('timestamp', timestamp);
+  formData.set('submitted_at', timestamp);
+  formData.set('company', company);
+  formData.set('business', company);
+  formData.set('business_type', businessType);
+  formData.set('industry', businessType);
+  formData.set('source_button', source);
+  formData.set('source', source);
+  formData.set('message', message);
+  formData.set('page_url', firstFormValue(formData, ['page_url']) || window.location.href);
+  formData.set('user_agent', firstFormValue(formData, ['user_agent']) || navigator.userAgent);
+
+  return {
+    timestamp,
+    company,
+    businessType,
+    source,
+    message,
+    name: firstFormValue(formData, ['name']),
+    email: firstFormValue(formData, ['email']),
+    phone: firstFormValue(formData, ['phone'])
+  };
+}
+
+async function submitLeadToSheet(formData) {
+  const url = getSheetUrl();
+
+  if (!url) {
+    console.log('Spreadsheet endpoint not connected yet. Lead captured locally:', Object.fromEntries(formData.entries()));
+    return { status: 'demo' };
+  }
+
+  await fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  });
+
+  return { status: 'sent' };
 }
 
 openModalButtons.forEach((button) => button.addEventListener('click', openModal));
@@ -126,45 +293,41 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-async function submitLeadToSheet(formData) {
-  if (!GOOGLE_SHEET_WEB_APP_URL) {
-    console.log('Spreadsheet endpoint not connected yet. Lead captured locally:', Object.fromEntries(formData.entries()));
-    return;
-  }
-
-  await fetch(GOOGLE_SHEET_WEB_APP_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: formData
-  });
-}
-
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
 
   const submitButton = form.querySelector('button[type="submit"]');
   const originalText = submitButton.textContent;
   const formData = new FormData(form);
-  formData.append('submitted_at', new Date().toISOString());
+  const lead = normalizeLeadFormData(formData);
 
   submitButton.disabled = true;
   submitButton.textContent = 'Submitting...';
+  setFormStatus('pending', 'Sending your lead details...');
 
   try {
-    await submitLeadToSheet(formData);
+    const result = await submitLeadToSheet(formData);
+    const connectedMessage = `Thank you, ${lead.name || 'there'}. Your ${lead.businessType || 'business'} lead details were sent to the connected lead spreadsheet.`;
+    const demoMessage = `Thank you, ${lead.name || 'there'}. Your lead details were validated in demo mode. Add the Google Apps Script URL in script.js to save this to Google Sheets.`;
+
+    successMessage.textContent = result.status === 'sent' ? connectedMessage : demoMessage;
     modal.classList.add('success');
   } catch (error) {
     console.error(error);
-    alert('Something went wrong while submitting. Please try again.');
+    setFormStatus('error', 'The form could not reach the Google Apps Script endpoint. Please check the Web App URL and deployment permissions, then try again.');
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = originalText;
   }
 });
 
-if (GOOGLE_SHEET_WEB_APP_URL && formNote) {
-  formNote.textContent = 'Submissions are connected to your live spreadsheet.';
-}
+updateFormNote();
+setTrackingFields('Website form');
 
 function createMessage(sender, text) {
   const message = document.createElement('div');
@@ -198,10 +361,6 @@ function resetLeadSummary() {
   summaryTime.textContent = 'Collecting...';
   summaryContact.textContent = 'Collecting...';
   summaryStatus.textContent = 'Qualifying lead...';
-}
-
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function runScenario(key = 'dental') {
@@ -246,18 +405,15 @@ demoReplies.addEventListener('click', (event) => {
   runScenario(button.dataset.scenario);
 });
 
-const chatWidgetBody = document.querySelector('.chat-widget-body');
-
-const widgetState = {
-  stage: 'business',
-  data: {}
-};
-
 function resetWidgetConversation() {
-  widgetState.stage = 'business';
+  widgetState.stage = 'business_type';
   widgetState.data = {};
+  widgetState.isResponding = false;
   chatWidgetBody.innerHTML = '';
-  chatWidgetBody.appendChild(createMessage('bot', 'Hi. I’m InstantLead AI. I can simulate a real lead-qualification conversation for your business. What type of business should I act for? For example: dental clinic, real estate agency, home services, restaurant, or gym.'));
+  chatSuggestions.hidden = false;
+  chatInput.disabled = false;
+  chatSend.disabled = false;
+  chatWidgetBody.appendChild(createMessage('bot', 'Hi. I’m InstantLead AI. I can capture a qualified lead for your business and show what your team would receive. What type of business do you run?'));
   chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
 }
 
@@ -266,16 +422,39 @@ function isGreeting(text) {
   return ['hi', 'hello', 'hey', 'hola', 'bonjour', 'ciao', 'good morning', 'good afternoon', 'good evening'].includes(lower);
 }
 
-function detectBusiness(text) {
+function detectBusinessType(text) {
   const lower = text.toLowerCase();
-  if (lower.includes('dental') || lower.includes('dentist') || lower.includes('clinic')) return 'dental clinic';
-  if (lower.includes('real') || lower.includes('estate') || lower.includes('property') || lower.includes('broker')) return 'real estate agency';
-  if (lower.includes('home') || lower.includes('plumb') || lower.includes('boiler') || lower.includes('repair') || lower.includes('hvac')) return 'home services company';
-  if (lower.includes('restaurant') || lower.includes('bar') || lower.includes('cafe')) return 'restaurant';
-  if (lower.includes('gym') || lower.includes('fitness') || lower.includes('trainer')) return 'fitness business';
-  if (lower.includes('hotel')) return 'hotel';
-  if (lower.includes('law') || lower.includes('legal')) return 'law firm';
+
+  if (lower.includes('dental') || lower.includes('dentist')) return 'Dental Practice';
+  if (lower.includes('medical') || lower.includes('clinic') || lower.includes('doctor')) return 'Medical Practice';
+  if (lower.includes('med spa') || lower.includes('spa')) return 'Med Spa';
+  if (lower.includes('real') || lower.includes('estate') || lower.includes('property') || lower.includes('broker')) return 'Real Estate';
+  if (lower.includes('home') || lower.includes('plumb') || lower.includes('boiler') || lower.includes('repair') || lower.includes('hvac')) return 'Home Services';
+  if (lower.includes('coach') || lower.includes('consult')) return 'Coaching / Consulting';
+
   return text;
+}
+
+function getAssistantNeedPrompt(businessType) {
+  const lower = businessType.toLowerCase();
+
+  if (lower.includes('dental')) {
+    return 'What should the assistant help capture first: emergency appointments, new patient bookings, cosmetic consultations, or general questions?';
+  }
+
+  if (lower.includes('real estate')) {
+    return 'What kind of property lead should the assistant qualify: buyer inquiry, seller valuation, rental inquiry, or viewing request?';
+  }
+
+  if (lower.includes('home services')) {
+    return 'What lead should the assistant qualify: urgent repair, quote request, maintenance visit, or installation?';
+  }
+
+  if (lower.includes('medical') || lower.includes('med spa')) {
+    return 'What should the assistant handle: new patient inquiries, appointment requests, treatment questions, or after-hours leads?';
+  }
+
+  return 'What should the assistant handle for you: appointments, quotes, consultations, bookings, FAQs, or after-hours inquiries?';
 }
 
 function containsPricingQuestion(text) {
@@ -295,56 +474,109 @@ function containsSetupQuestion(text) {
 
 function containsTrialRequest(text) {
   const lower = text.toLowerCase();
-  return lower.includes('trial') || lower.includes('get started') || lower.includes('start now') || lower.includes('contact me');
+  return lower.includes('trial') || lower.includes('get started') || lower.includes('start now') || lower.includes('book') || lower.includes('contact me');
+}
+
+function currentStagePrompt() {
+  switch (widgetState.stage) {
+    case 'business_type':
+      return 'What type of business do you run?';
+    case 'company':
+      return 'What is the company or practice name?';
+    case 'message':
+      return getAssistantNeedPrompt(widgetState.data.business_type || '');
+    case 'urgency':
+      return 'How urgent are these leads: immediate response, same-day follow-up, next business day, or general nurturing?';
+    case 'name':
+      return 'Who should receive the setup details or lead follow-up?';
+    case 'email':
+      return 'What is the best email address?';
+    case 'phone':
+      return 'What phone or WhatsApp number should be attached to the lead?';
+    case 'follow_up':
+      return 'When is the best time for follow-up?';
+    default:
+      return 'Type "restart" to qualify another lead, or "trial" to open the full form.';
+  }
+}
+
+function looksLikeEmail(text) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim());
+}
+
+function looksLikePhone(text) {
+  const digits = text.replace(/\D/g, '');
+  return digits.length >= 7;
+}
+
+function chatLeadMessage() {
+  const data = widgetState.data;
+  return [
+    data.message ? `AI task: ${data.message}` : '',
+    data.urgency ? `Lead urgency: ${data.urgency}` : '',
+    data.follow_up ? `Preferred follow-up: ${data.follow_up}` : ''
+  ].filter(Boolean).join(' ');
 }
 
 function openTrialFromChat() {
-  leadSource.value = 'Chatbot CTA';
-  pageUrl.value = window.location.href;
-  userAgent.value = navigator.userAgent;
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  openModal('Chatbot CTA', {
+    business_type: widgetState.data.business_type,
+    company: widgetState.data.company,
+    name: widgetState.data.name,
+    email: widgetState.data.email,
+    phone: widgetState.data.phone,
+    message: chatLeadMessage()
+  });
 }
 
 async function widgetBotReply(text) {
   const typing = createTypingIndicator();
   chatWidgetBody.appendChild(typing);
   chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
-  await wait(550);
+  await wait(520);
   typing.remove();
   chatWidgetBody.appendChild(createMessage('bot', text));
   chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
 }
 
-async function sendWidgetLeadToSheet() {
-  if (!GOOGLE_SHEET_WEB_APP_URL) {
-    console.log('Chat lead captured locally:', widgetState.data);
-    return;
-  }
+function makeLeadSummary() {
+  const data = widgetState.data;
 
-  const contact = widgetState.data.contact || '';
-  const formData = new FormData();
-  formData.append('submitted_at', new Date().toISOString());
-  formData.append('business', widgetState.data.business || '');
-  formData.append('industry', widgetState.data.business || '');
-  formData.append('name', widgetState.data.name || '');
-  formData.append('email', contact.includes('@') ? contact : '');
-  formData.append('phone', contact.includes('@') ? '' : contact);
-  formData.append('website', '');
-  formData.append('plan', 'Chatbot lead qualification demo');
-  formData.append('contact_preference', 'Captured through chat widget');
-  formData.append('volume', '');
-  formData.append('message', `Need: ${widgetState.data.need || ''}. Urgency: ${widgetState.data.urgency || ''}. Preferred time: ${widgetState.data.time || ''}.`);
-  formData.append('source', 'Floating chat widget');
-  formData.append('page_url', window.location.href);
-  formData.append('user_agent', navigator.userAgent);
-
-  await submitLeadToSheet(formData);
+  return `Qualified lead summary\n\nCompany: ${data.company}\nBusiness type: ${data.business_type}\nNeed: ${data.message}\nUrgency: ${data.urgency}\nContact: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nPreferred follow-up: ${data.follow_up}\n\nThis is the kind of structured lead your team would receive instead of a vague website message.`;
 }
 
-function makeLeadSummary() {
-  const d = widgetState.data;
-  return `Lead captured and qualified ✅\n\nBusiness type: ${d.business}\nVisitor need: ${d.need}\nUrgency: ${d.urgency}\nName: ${d.name}\nContact: ${d.contact}\nPreferred time: ${d.time}\n\nYour team would receive this as a structured lead summary, so the visitor is not lost even outside business hours.`;
+async function sendWidgetLeadToSheet() {
+  const formData = new FormData();
+  const data = widgetState.data;
+  const timestamp = new Date().toISOString();
+
+  formData.set('timestamp', timestamp);
+  formData.set('submitted_at', timestamp);
+  formData.set('company', data.company || '');
+  formData.set('business', data.company || '');
+  formData.set('business_type', data.business_type || '');
+  formData.set('industry', data.business_type || '');
+  formData.set('name', data.name || '');
+  formData.set('email', data.email || '');
+  formData.set('phone', data.phone || '');
+  formData.set('website', '');
+  formData.set('plan', 'Chatbot lead qualification demo');
+  formData.set('contact_preference', data.follow_up || 'Captured through chat widget');
+  formData.set('volume', '');
+  formData.set('message', chatLeadMessage());
+  formData.set('source', 'Floating chat widget');
+  formData.set('source_button', 'Floating chat widget');
+  formData.set('page_url', window.location.href);
+  formData.set('user_agent', navigator.userAgent);
+
+  normalizeLeadFormData(formData);
+  return submitLeadToSheet(formData);
+}
+
+function setChatBusy(isBusy) {
+  widgetState.isResponding = isBusy;
+  chatInput.disabled = isBusy;
+  chatSend.disabled = isBusy;
 }
 
 async function handleWidgetConversation(text) {
@@ -356,79 +588,112 @@ async function handleWidgetConversation(text) {
     return;
   }
 
-  if (containsTrialRequest(clean)) {
-    await widgetBotReply('Perfect. I’ll open the free-trial form so your details can be captured properly.');
+  if (containsTrialRequest(clean) && widgetState.stage !== 'business_type') {
+    await widgetBotReply('Good idea. I’ll open the form and prefill anything we have already captured.');
     openTrialFromChat();
     return;
   }
 
   if (containsPricingQuestion(clean)) {
-    await widgetBotReply('Pricing starts from $50/month. The positioning is simple: if the AI saves even one missed lead or appointment per month, it can pay for itself. There is also a $200 one-time setup option for custom AI training and lead-flow configuration.');
+    await widgetBotReply(`Pricing starts at $50/month for the simple monthly plan. There is also a setup + monthly option for deeper custom training. ${currentStagePrompt()}`);
     return;
   }
 
   if (containsSpreadsheetQuestion(clean)) {
-    await widgetBotReply('Yes. Lead data can be sent directly into a live Google Sheet / Excel-style spreadsheet with timestamp, name, contact details, business type, need, urgency, source button, and message.');
+    await widgetBotReply(`Yes. The lead can be saved to Google Sheets with timestamp, name, email, phone, business type, company, message, source button, page URL, and user agent. ${currentStagePrompt()}`);
     return;
   }
 
   if (containsSetupQuestion(clean)) {
-    await widgetBotReply('Setup is designed to be lightweight: we add the AI lead widget to the website, train it on the business FAQs and services, define the qualification questions, and connect the lead output to email, Google Sheets, or CRM.');
+    await widgetBotReply(`Setup is lightweight: add the assistant to your website, train it on services and FAQs, choose qualification questions, then send qualified leads to email, Google Sheets, or a CRM. ${currentStagePrompt()}`);
     return;
   }
 
-  if (isGreeting(clean) && widgetState.stage === 'business') {
-    await widgetBotReply('Hi. Let’s run a quick simulation. What kind of business should I act for — dental clinic, real estate agency, home services, restaurant, or something else?');
+  if (isGreeting(clean) && widgetState.stage === 'business_type') {
+    await widgetBotReply('Hi. Let’s qualify this properly. What type of business do you run?');
     return;
   }
 
   switch (widgetState.stage) {
-    case 'business': {
-      widgetState.data.business = detectBusiness(clean);
-      widgetState.stage = 'need';
-      await widgetBotReply(`Great. I’ll act as the AI assistant for a ${widgetState.data.business}. A website visitor arrives. What are they looking for? For example: appointment, quote, property viewing, repair, booking, or consultation.`);
+    case 'business_type': {
+      widgetState.data.business_type = detectBusinessType(clean);
+      widgetState.stage = 'company';
+      await widgetBotReply(`Great. I’ll tailor this for ${widgetState.data.business_type}. What is the company or practice name?`);
       break;
     }
 
-    case 'need': {
-      widgetState.data.need = clean;
+    case 'company': {
+      widgetState.data.company = clean;
+      widgetState.stage = 'message';
+      await widgetBotReply(`${widgetState.data.company} is noted. ${getAssistantNeedPrompt(widgetState.data.business_type)}`);
+      break;
+    }
+
+    case 'message': {
+      widgetState.data.message = clean;
       widgetState.stage = 'urgency';
-      await widgetBotReply('Understood. I would now qualify urgency. Is this urgent today, needed this week, or just a general inquiry?');
+      await widgetBotReply('Got it. How urgent are these leads: immediate response, same-day follow-up, next business day, or general nurturing?');
       break;
     }
 
     case 'urgency': {
       widgetState.data.urgency = clean;
       widgetState.stage = 'name';
-      await widgetBotReply('Good. Now I capture the visitor identity. What name should I use for this demo lead?');
+      await widgetBotReply('Thanks. Who should receive the setup details or lead follow-up?');
       break;
     }
 
     case 'name': {
       widgetState.data.name = clean;
-      widgetState.stage = 'contact';
-      await widgetBotReply(`Thanks, ${widgetState.data.name}. What phone number or email should the business use to follow up?`);
+      widgetState.stage = 'email';
+      await widgetBotReply(`Thanks, ${widgetState.data.name}. What is the best email address?`);
       break;
     }
 
-    case 'contact': {
-      widgetState.data.contact = clean;
-      widgetState.stage = 'time';
-      await widgetBotReply('Final step: what is the preferred contact time or appointment window?');
+    case 'email': {
+      if (!looksLikeEmail(clean)) {
+        await widgetBotReply('Could you send that as a valid email address, like name@company.com?');
+        return;
+      }
+
+      widgetState.data.email = clean;
+      widgetState.stage = 'phone';
+      await widgetBotReply('Perfect. What phone or WhatsApp number should be attached to the lead?');
       break;
     }
 
-    case 'time': {
-      widgetState.data.time = clean;
+    case 'phone': {
+      if (!looksLikePhone(clean)) {
+        await widgetBotReply('Could you send a phone number with at least 7 digits? This helps the business follow up quickly.');
+        return;
+      }
+
+      widgetState.data.phone = clean;
+      widgetState.stage = 'follow_up';
+      await widgetBotReply('Last question: when is the best time for follow-up?');
+      break;
+    }
+
+    case 'follow_up': {
+      widgetState.data.follow_up = clean;
       widgetState.stage = 'complete';
       await widgetBotReply(makeLeadSummary());
-      await sendWidgetLeadToSheet();
-      await widgetBotReply('This is what InstantLead AI does: it turns anonymous website visitors into qualified leads your team can act on. Type “restart” to test another case, “pricing” for pricing, or “trial” to open the free-trial form.');
+
+      try {
+        const result = await sendWidgetLeadToSheet();
+        await widgetBotReply(result.status === 'sent'
+          ? 'I sent this chat lead to the connected Google Sheet. Type "restart" to qualify another lead, or "trial" to open the full form.'
+          : 'This chat lead was captured in demo mode. Connect the Google Apps Script URL in script.js to save it to Google Sheets. Type "restart" to qualify another lead, or "trial" to open the full form.');
+      } catch (error) {
+        console.error(error);
+        await widgetBotReply('The lead is qualified, but I could not reach the Google Apps Script endpoint. Check the Web App URL and deployment permissions, then test again.');
+      }
+
       break;
     }
 
     case 'complete': {
-      await widgetBotReply('This lead is already qualified. Type “restart” to simulate a new lead, “pricing” to see pricing, or “trial” to open the free-trial form.');
+      await widgetBotReply('This lead is already qualified. Type "restart" for a new conversation, "pricing" for pricing, or "trial" to open the form.');
       break;
     }
 
@@ -438,28 +703,46 @@ async function handleWidgetConversation(text) {
   }
 }
 
+async function submitChatPrompt(text) {
+  const clean = text.trim();
+  if (!clean || widgetState.isResponding) return;
+
+  chatSuggestions.hidden = true;
+  chatWidgetBody.appendChild(createMessage('user', clean));
+  chatInput.value = '';
+  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
+
+  setChatBusy(true);
+  try {
+    await handleWidgetConversation(clean);
+  } finally {
+    setChatBusy(false);
+    chatInput.focus();
+  }
+}
+
+function sendDemoMessage() {
+  submitChatPrompt(chatInput.value);
+}
+
 floatingChat.addEventListener('click', () => {
   chatWidget.classList.toggle('open');
+  if (chatWidget.classList.contains('open')) chatInput.focus();
 });
 
 closeChat.addEventListener('click', () => {
   chatWidget.classList.remove('open');
 });
 
-async function sendDemoMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-
-  chatWidgetBody.appendChild(createMessage('user', text));
-  chatInput.value = '';
-  chatWidgetBody.scrollTop = chatWidgetBody.scrollHeight;
-
-  await handleWidgetConversation(text);
-}
-
 chatSend.addEventListener('click', sendDemoMessage);
 chatInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') sendDemoMessage();
+});
+
+chatSuggestions.addEventListener('click', (event) => {
+  const button = event.target.closest('button[data-chat-prompt]');
+  if (!button) return;
+  submitChatPrompt(button.dataset.chatPrompt);
 });
 
 resetWidgetConversation();
