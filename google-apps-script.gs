@@ -1,88 +1,141 @@
-/**
- * InstantLead AI V4 - Google Apps Script receiver
- *
- * Setup:
- * 1. Create a Google Sheet.
- * 2. Extensions > Apps Script.
- * 3. Paste this file.
- * 4. Replace SHEET_ID with your Google Sheet ID.
- * 5. Deploy > New deployment > Web app.
- * 6. Execute as: Me.
- * 7. Who has access: Anyone.
- * 8. Copy the Web App URL and paste it into script.js as GOOGLE_SCRIPT_URL.
- */
+const SHEET_NAME = 'Leads';
 
-const SHEET_ID = "PASTE_YOUR_GOOGLE_SHEET_ID_HERE";
-const SHEET_NAME = "Leads";
+const HEADERS = [
+  'Received At',
+  'Timestamp',
+  'Full Name',
+  'Email',
+  'Phone',
+  'Phone Country Code',
+  'Phone Country',
+  'Business Type',
+  'Company',
+  'Message',
+  'Source Button',
+  'Preferred Plan',
+  'Preferred Contact Method',
+  'Lead Volume',
+  'Website URL',
+  'Page URL',
+  'User Agent'
+];
 
 function doPost(e) {
+  const lock = LockService.getScriptLock();
+  let lockAcquired = false;
+  lock.waitLock(30000);
+  lockAcquired = true;
+
   try {
-    const sheet = getOrCreateSheet_();
-    const payload = parsePayload_(e);
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheetByName(SHEET_NAME) || spreadsheet.insertSheet(SHEET_NAME);
+    const headers = ensureHeaders_(sheet);
+    const params = e.parameter || {};
+    const receivedAt = new Date();
+    const row = headers.map(function(header) {
+      return valueForHeader_(header, params, receivedAt);
+    });
 
-    ensureHeaders_(sheet);
+    sheet.appendRow(row);
 
-    sheet.appendRow([
-      new Date(),
-      payload.name || "",
-      payload.email || "",
-      payload.company || "",
-      payload.phone || "",
-      payload.website || "",
-      payload.monthlyLeads || "",
-      payload.message || "",
-      payload.source || "InstantLead AI website",
-      payload.version || "4.0.0",
-      payload.submittedAt || "",
-    ]);
-
-    return jsonResponse_({ ok: true, message: "Lead saved" });
+    return jsonOutput_({
+      result: 'success',
+      captured_at: receivedAt.toISOString()
+    });
   } catch (error) {
-    return jsonResponse_({ ok: false, error: String(error) });
+    return jsonOutput_({
+      result: 'error',
+      message: String(error)
+    });
+  } finally {
+    if (lockAcquired) {
+      lock.releaseLock();
+    }
   }
 }
 
 function doGet() {
-  return jsonResponse_({ ok: true, message: "InstantLead AI V4 endpoint is live" });
-}
-
-function getOrCreateSheet_() {
-  const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-  let sheet = spreadsheet.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = spreadsheet.insertSheet(SHEET_NAME);
-  return sheet;
+  return ContentService
+    .createTextOutput('InstantLead AI lead-capture endpoint is live.')
+    .setMimeType(ContentService.MimeType.TEXT);
 }
 
 function ensureHeaders_(sheet) {
-  if (sheet.getLastRow() > 0) return;
-
-  sheet.appendRow([
-    "Received At",
-    "Name",
-    "Email",
-    "Company",
-    "Phone",
-    "Website",
-    "Monthly Leads",
-    "Message",
-    "Source",
-    "Version",
-    "Submitted At",
-  ]);
-}
-
-function parsePayload_(e) {
-  if (!e) return {};
-
-  if (e.postData && e.postData.type === "application/json") {
-    return JSON.parse(e.postData.contents || "{}");
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+    sheet.setFrozenRows(1);
+    return HEADERS;
   }
 
-  return e.parameter || {};
+  const width = Math.max(sheet.getLastColumn(), HEADERS.length);
+  const currentHeaders = sheet.getRange(1, 1, 1, width).getValues()[0].map(function(value) {
+    return String(value || '').trim();
+  });
+  const knownHeaders = currentHeaders.filter(Boolean);
+  const nextHeaders = currentHeaders.slice();
+
+  HEADERS.forEach(function(header) {
+    if (knownHeaders.indexOf(header) === -1) {
+      nextHeaders.push(header);
+      knownHeaders.push(header);
+    }
+  });
+
+  while (nextHeaders.length && !nextHeaders[nextHeaders.length - 1]) {
+    nextHeaders.pop();
+  }
+
+  sheet.getRange(1, 1, 1, nextHeaders.length).setValues([nextHeaders]);
+  sheet.setFrozenRows(1);
+
+  return nextHeaders;
 }
 
-function jsonResponse_(data) {
+function valueForHeader_(header, params, receivedAt) {
+  const timestamp = pick_(params, ['timestamp', 'submitted_at']);
+  const company = pick_(params, ['company', 'business', 'business_name']);
+  const businessType = pick_(params, ['business_type', 'industry']);
+  const source = pick_(params, ['source_button', 'source']);
+
+  const values = {
+    'Received At': receivedAt,
+    'Timestamp': timestamp,
+    'Submitted At': timestamp,
+    'Full Name': pick_(params, ['name', 'full_name']),
+    'Email': pick_(params, ['email']),
+    'Phone': pick_(params, ['phone']),
+    'Phone Country Code': pick_(params, ['phone_country_code']),
+    'Phone Country': pick_(params, ['phone_country']),
+    'Business Type': businessType,
+    'Industry': businessType,
+    'Company': company,
+    'Business Name': company,
+    'Message': pick_(params, ['message']),
+    'Source Button': source,
+    'Preferred Plan': pick_(params, ['plan']),
+    'Preferred Contact Method': pick_(params, ['contact_preference']),
+    'Lead Volume': pick_(params, ['volume']),
+    'Website URL': pick_(params, ['website']),
+    'Page URL': pick_(params, ['page_url']),
+    'User Agent': pick_(params, ['user_agent'])
+  };
+
+  return values[header] || '';
+}
+
+function pick_(params, names) {
+  for (let i = 0; i < names.length; i++) {
+    const value = params[names[i]];
+    if (value !== undefined && value !== null && String(value).trim() !== '') {
+      return String(value).trim();
+    }
+  }
+
+  return '';
+}
+
+function jsonOutput_(payload) {
   return ContentService
-    .createTextOutput(JSON.stringify(data))
+    .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
 }
