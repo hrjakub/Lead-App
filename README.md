@@ -1,108 +1,185 @@
-# InstantLead AI Static Website - V3.2
+# Kasamatsu
 
-InstantLead AI is a simple static website prototype for an AI lead-capture service. It is designed to be deployed from GitHub to Vercel without React, Next.js, Node.js, npm, or any build step.
+Private testing website for Instant Lead, featuring the Kasamatsu Japanese restaurant concept near Ramatuelle and Saint-Tropez.
 
-## How the project works
+## Current Version
 
-- `index.html` contains the landing page, pricing section, demo simulator, floating chatbot, and lead form modal.
-- `style.css` controls the full visual design, responsive layout, modal, demo chat, and chatbot styling.
-- `script.js` powers the CTA buttons, pricing buttons, modal form, chatbot flow, demo scenarios, form validation, success messages, and Google Apps Script submission.
-- `google-apps-script.gs` is pasted into a Google Sheet Apps Script project and deployed as a Web App. It receives form/chat submissions and appends rows to a `Leads` sheet.
-- `vercel.json` keeps the static Vercel deployment clean with clean URLs and no trailing slash.
+**v0.2.0 — First practical AI booking assistant**
 
-## Current connection status
+This version adds the first real infrastructure for an AI restaurant reservation assistant:
 
-The website is connected to a Google Apps Script Web App through this line in `script.js`:
+- Static Kasamatsu landing page
+- Reservation form connected to the assistant flow
+- AI-style booking assistant interface on the page
+- Vercel backend endpoint at `/api/chat`
+- OpenAI Responses API integration through a secure serverless function
+- Supabase database schema for 10 restaurant tables and reservations
+- Double-booking protection for overlapping reservations
+- Placeholder environment variable file for setup
 
-```js
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzxMqn_LrJQ75ifItGRnSlgMe1Zui6SZSHnEDkFiNpnPbWZHuJvEG7b3UF4aJ3dvhzWfQ/exec";
+No React, Next.js, npm install, or build step is required.
+
+## How The Project Works
+
+```text
+index.html
 ```
 
-Form and chatbot submissions are posted to Google Apps Script. If the URL is removed or left blank, the site falls back to demo mode and logs the prepared lead payload in the browser console.
+Contains the restaurant landing page, concept, menu preview, location block, reservation form, and booking assistant section.
 
-Because the static site uses `fetch(..., { mode: "no-cors" })`, the browser cannot read the Apps Script response. After testing, confirm success by checking for a new row in the Google Sheet.
+```text
+style.css
+```
 
-## Lead data captured
+Controls the full visual design, responsive layout, reservation form, and assistant interface.
 
-The form and chatbot send these core fields:
+```text
+script.js
+```
 
-- Timestamp
-- Full name
-- Email
-- Phone
-- Phone country code
-- Phone country
-- Business type
-- Company
-- Message
-- Source button
+Runs the logo animation, reservation form behavior, chat UI, quick prompts, and browser-to-backend calls.
 
-They also send useful context:
+```text
+api/chat.js
+```
 
-- Preferred plan
-- Preferred contact method
-- Lead volume
-- Website URL
-- Page URL
-- User agent
+Runs only on Vercel. It keeps the OpenAI API key and Supabase service key private, talks to OpenAI, and lets the AI call reservation tools.
 
-## Connect Google Sheets
+```text
+database/supabase-schema.sql
+```
 
-1. Open Google Sheets and create a spreadsheet named `InstantLead AI Leads`.
-2. Go to **Extensions > Apps Script**.
-3. Delete any starter code.
-4. Paste the full code from `google-apps-script.gs`.
-5. Save the Apps Script project.
-6. Click **Deploy > New deployment**.
-7. Choose **Web app**.
-8. Set **Execute as** to `Me`.
-9. Set **Who has access** to `Anyone`.
-10. Click **Deploy** and copy the Web App URL ending in `/exec`.
-11. Replace the existing `GOOGLE_SHEET_WEB_APP_URL` in `script.js` if you deploy a new Apps Script Web App URL.
-12. Upload the updated files to GitHub and let Vercel redeploy.
+Creates the Supabase tables, seeds 10 restaurant tables, and adds functions for checking availability and creating reservations.
 
-## Test checklist
+```text
+.env.example
+```
 
-1. Open the local or deployed website.
-2. Click **Start Free Trial**, **Get Started**, **Start Today**, and the final CTA to confirm each opens the lead form.
-3. Submit a test form lead.
-4. Open the floating chat, complete the lead-capture conversation, and confirm it reaches the summary step.
-5. If the Apps Script URL is connected, check the Google Sheet for new rows.
-6. Test mobile width to confirm the modal, pricing cards, and chat widget remain usable.
+Shows which environment variables are needed. Do not put real keys in GitHub.
 
-## Deployment
+## Step By Step Setup
 
-This is a static site. Deploy by uploading these files to the GitHub repository connected to Vercel:
+### 1. Upload The Project To GitHub
+
+Upload these files and folders to the root of the GitHub repository:
 
 - `index.html`
 - `style.css`
 - `script.js`
-- `google-apps-script.gs`
-- `vercel.json`
+- `api/chat.js`
+- `database/supabase-schema.sql`
+- `.env.example`
+- `.gitignore`
 - `README.md`
+- `CHANGELOG.md`
+- `ROADMAP.md`
+- `STATUS.md`
+- `VERSION`
+- `assets/logo.png`
 
-Vercel will redeploy automatically after you commit the updated files in GitHub.
+Do not upload:
 
-## Tools used
+- `.DS_Store`
+- `.env`
+- `.env.local`
+- Any file containing real secret keys
 
-- HTML
-- CSS
-- Vanilla JavaScript
-- Google Apps Script
-- Google Sheets
-- GitHub
-- Vercel
+### 2. Create A Supabase Project
 
-## Version history
+1. Go to Supabase.
+2. Create a new project.
+3. Open the SQL Editor.
+4. Paste everything from `database/supabase-schema.sql`.
+5. Run the SQL.
 
-- **V1**: Initial static landing page prototype.
-- **V2**: Added stronger live demo structure and lead form preparation.
-- **V3**: Added realistic demo scenarios, lead summary card, floating chatbot, and Google Apps Script instructions.
-- **V3.1**: Improved lead field alignment, source-button tracking, timestamp capture, chatbot lead qualification, inline form error handling, and Apps Script compatibility.
-- **V3.2**: Added the polished IL logo mark, international phone country selector with flags, custom "Other" business type field, and connected Google Apps Script endpoint.
+This creates:
 
-## Important notes
+- 10 restaurant tables
+- A reservations table
+- A restaurant FAQ table
+- Availability checking
+- Reservation creation
+- Double-booking protection
 
-- Do not add `package.json`, npm, React, Next.js, or a build setup.
-- Do not paste private API keys into this static website.
-- The Google Apps Script URL is acceptable for this simple prototype, but a production SaaS should also use spam protection, stronger validation, and a protected backend.
+### 3. Get Supabase Keys
+
+In Supabase, go to:
+
+```text
+Project Settings > API
+```
+
+Copy:
+
+- Project URL
+- Service role key
+
+The service role key must only be used in Vercel environment variables. Never place it inside browser JavaScript.
+
+### 4. Create An OpenAI API Key
+
+Create an OpenAI API key from the OpenAI platform dashboard.
+
+Keep it private. It belongs in Vercel, not in `script.js`.
+
+### 5. Add Environment Variables In Vercel
+
+In Vercel, open:
+
+```text
+Project > Settings > Environment Variables
+```
+
+Add:
+
+```text
+OPENAI_API_KEY
+OPENAI_MODEL
+SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+RESTAURANT_TIMEZONE
+```
+
+Suggested values:
+
+```text
+OPENAI_MODEL=gpt-4.1-mini
+RESTAURANT_TIMEZONE=Europe/Paris
+```
+
+### 6. Redeploy On Vercel
+
+After adding the environment variables:
+
+1. Go to the Vercel Deployments tab.
+2. Redeploy the latest GitHub commit.
+3. Open the live website.
+
+The assistant will not fully work from `file://` because `/api/chat` only exists after Vercel deploys the backend function.
+
+### 7. Test The Assistant
+
+Try:
+
+- “Book a table for two tomorrow at 20:00.”
+- “Can I request the most romantic table with champagne?”
+- “Book four people Friday at 19:30 under Jakub, jakub@example.com.”
+- Try booking the same table/time twice to confirm the database prevents overlap.
+
+## Current Limitations
+
+- No staff dashboard yet.
+- No email or SMS confirmations yet.
+- No payment/deposit flow yet.
+- Opening hours and location are prototype values.
+- The assistant creates reservations in Supabase, but restaurant staff still need a future dashboard to review them comfortably.
+
+## Next Build Direction
+
+Next practical version:
+
+- Staff dashboard for today’s bookings
+- Manual reservation editing
+- Cancel/change reservation flow
+- Email notification to the restaurant team
+- More detailed menu and policy knowledge

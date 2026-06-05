@@ -1,363 +1,345 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InstantLead AI | Never Miss a Lead Again</title>
-  <meta name="description" content="InstantLead AI responds to website visitors instantly, qualifies leads, and helps local businesses book more appointments." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="site-header">
-    <nav class="nav container">
-      <a class="logo" href="#top" aria-label="InstantLead AI home">
-        <span class="logo-mark" aria-hidden="true">
-          <span class="logo-monogram">IL</span>
-        </span>
-        <span class="logo-text">InstantLead AI</span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Private testing website for Instant Lead, featuring the Kasamatsu restaurant concept and AI booking assistant prototype."
+    />
+    <title>Kasamatsu | Instant Lead Test Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <a class="header-brand" href="#top" aria-label="Kasamatsu home">
+        <span>KASAMATSU</span>
+        <span lang="ja">カサマツ</span>
       </a>
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#testimonials">Results</a>
-      </div>
-      <button class="btn btn-small btn-primary open-modal" data-source="Header Get Started">Get Started</button>
-    </nav>
-  </header>
+      <nav>
+        <a href="#concept">Concept</a>
+        <a href="#menu">Menu</a>
+        <a href="#assistant">Assistant</a>
+        <a href="#reservation">Reserve</a>
+      </nav>
+    </header>
 
-  <main id="top">
-    <section class="hero container">
-      <div class="hero-copy reveal">
-        <div class="badge">AI lead response for local businesses</div>
-        <h1>Never Miss a Lead Again</h1>
-        <p class="hero-text">InstantLead AI replies to every inquiry in seconds, qualifies prospects automatically, and helps book more appointments even outside business hours.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary open-modal" data-source="Hero Start Free Trial">Start Free Trial</button>
-          <a href="#demo" class="btn btn-secondary">See Live Demo</a>
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <div class="logo-mark" data-logo-breeze aria-label="Kasamatsu, カサマツ">
+            <svg
+              class="tree-logo"
+              viewBox="0 0 820 520"
+              role="img"
+              aria-labelledby="tree-title"
+            >
+              <title id="tree-title">Hand-drawn umbrella pine tree logo</title>
+              <g class="ground-lines" aria-hidden="true">
+                <path d="M240 396 C305 383 490 383 560 398" />
+                <path d="M285 408 C355 399 452 399 528 409" />
+                <path d="M330 416 C385 411 442 411 498 416" />
+              </g>
+
+              <g class="tree-still" aria-hidden="true">
+                <path d="M410 393 C405 337 406 292 411 238 C416 187 409 144 392 108" />
+                <path d="M430 393 C424 335 426 292 421 240 C416 184 429 139 454 102" />
+                <path d="M399 389 C380 337 374 296 386 247 C398 198 389 151 360 119" />
+                <path d="M442 389 C464 336 466 290 452 244 C438 197 448 153 487 122" />
+                <path d="M386 232 C322 198 253 184 168 196" />
+                <path d="M390 220 C329 166 266 142 198 143" />
+                <path d="M402 204 C344 124 290 95 235 92" />
+                <path d="M415 198 C388 121 360 80 316 62" />
+                <path d="M428 198 C459 114 493 80 541 63" />
+                <path d="M443 208 C498 132 556 100 626 100" />
+                <path d="M450 224 C516 170 587 146 678 154" />
+                <path d="M449 239 C530 207 602 205 716 224" />
+                <path d="M385 254 C333 239 269 238 202 256" />
+                <path d="M450 256 C512 238 583 240 664 268" />
+                <path d="M390 270 C356 265 318 272 276 292" />
+                <path d="M445 274 C487 265 530 271 580 296" />
+              </g>
+
+              <g class="needle-canopy" aria-hidden="true">
+                <g class="needle-cluster" data-depth="0.68" data-phase="0.11">
+                  <path d="M130 207 l-24 -8 M130 207 l-21 -22 M130 207 l-2 -31 M130 207 l17 -27 M130 207 l30 -9 M130 207 l25 13 M130 207 l-18 23" />
+                </g>
+                <g class="needle-cluster" data-depth="0.82" data-phase="0.24">
+                  <path d="M172 177 l-26 -10 M172 177 l-18 -26 M172 177 l5 -32 M172 177 l24 -24 M172 177 l34 -2 M172 177 l25 20 M172 177 l-25 19" />
+                </g>
+                <g class="needle-cluster" data-depth="0.92" data-phase="0.37">
+                  <path d="M219 142 l-27 -13 M219 142 l-13 -31 M219 142 l11 -33 M219 142 l30 -20 M219 142 l35 7 M219 142 l21 26 M219 142 l-29 15" />
+                </g>
+                <g class="needle-cluster" data-depth="1.08" data-phase="0.5">
+                  <path d="M274 112 l-28 -14 M274 112 l-10 -34 M274 112 l15 -34 M274 112 l35 -16 M274 112 l34 12 M274 112 l17 31 M274 112 l-32 12" />
+                </g>
+                <g class="needle-cluster" data-depth="1.18" data-phase="0.65">
+                  <path d="M331 89 l-28 -17 M331 89 l-5 -36 M331 89 l20 -33 M331 89 l38 -10 M331 89 l33 18 M331 89 l12 34 M331 89 l-34 8" />
+                </g>
+                <g class="needle-cluster" data-depth="1.28" data-phase="0.79">
+                  <path d="M390 78 l-27 -20 M390 78 l1 -38 M390 78 l25 -31 M390 78 l39 -3 M390 78 l29 24 M390 78 l5 36 M390 78 l-36 3" />
+                </g>
+                <g class="needle-cluster" data-depth="1.22" data-phase="0.93">
+                  <path d="M452 82 l-24 -23 M452 82 l9 -37 M452 82 l30 -27 M452 82 l39 5 M452 82 l25 29 M452 82 l-3 36 M452 82 l-36 -5" />
+                </g>
+                <g class="needle-cluster" data-depth="1.1" data-phase="1.08">
+                  <path d="M511 98 l-21 -25 M511 98 l15 -35 M511 98 l33 -23 M511 98 l37 11 M511 98 l19 32 M511 98 l-9 34 M511 98 l-34 -10" />
+                </g>
+                <g class="needle-cluster" data-depth="0.96" data-phase="1.22">
+                  <path d="M566 124 l-18 -27 M566 124 l20 -32 M566 124 l35 -17 M566 124 l33 16 M566 124 l14 33 M566 124 l-14 31 M566 124 l-31 -15" />
+                </g>
+                <g class="needle-cluster" data-depth="0.84" data-phase="1.36">
+                  <path d="M621 157 l-15 -28 M621 157 l23 -29 M621 157 l36 -11 M621 157 l29 21 M621 157 l8 33 M621 157 l-19 28 M621 157 l-28 -19" />
+                </g>
+                <g class="needle-cluster" data-depth="0.68" data-phase="1.51">
+                  <path d="M672 197 l-13 -26 M672 197 l24 -24 M672 197 l33 -5 M672 197 l24 21 M672 197 l2 31 M672 197 l-21 23 M672 197 l-24 -19" />
+                </g>
+                <g class="needle-cluster" data-depth="0.58" data-phase="1.64">
+                  <path d="M720 235 l-10 -23 M720 235 l22 -21 M720 235 l29 0 M720 235 l18 22 M720 235 l-3 27 M720 235 l-21 16 M720 235 l-18 -19" />
+                </g>
+                <g class="needle-cluster" data-depth="0.78" data-phase="0.31">
+                  <path d="M201 252 l-28 -3 M201 252 l-22 -20 M201 252 l2 -31 M201 252 l24 -22 M201 252 l33 1 M201 252 l21 23 M201 252 l-23 20" />
+                </g>
+                <g class="needle-cluster" data-depth="1.04" data-phase="0.61">
+                  <path d="M306 208 l-30 -6 M306 208 l-18 -29 M306 208 l10 -33 M306 208 l31 -19 M306 208 l35 8 M306 208 l19 29 M306 208 l-30 17" />
+                </g>
+                <g class="needle-cluster" data-depth="1.16" data-phase="0.92">
+                  <path d="M410 184 l-29 -11 M410 184 l-11 -34 M410 184 l18 -33 M410 184 l38 -12 M410 184 l34 18 M410 184 l12 36 M410 184 l-35 10" />
+                </g>
+                <g class="needle-cluster" data-depth="1.06" data-phase="1.18">
+                  <path d="M519 203 l-25 -15 M519 203 l-4 -34 M519 203 l23 -28 M519 203 l37 -5 M519 203 l29 23 M519 203 l4 34 M519 203 l-34 5" />
+                </g>
+                <g class="needle-cluster" data-depth="0.86" data-phase="1.47">
+                  <path d="M618 252 l-22 -15 M618 252 l-2 -31 M618 252 l24 -24 M618 252 l33 -1 M618 252 l24 22 M618 252 l0 31 M618 252 l-29 8" />
+                </g>
+              </g>
+            </svg>
+
+            <h1 id="hero-title" class="brand-word">KASAMATSU</h1>
+            <p class="brand-kana" lang="ja">カサマツ</p>
+          </div>
+
+          <p class="hero-subtitle">Japanese dining near Ramatuelle</p>
+          <p class="hero-copy">
+            A private Instant Lead test website for a calm, high-end restaurant
+            booking experience near Saint-Tropez.
+          </p>
+          <div class="hero-actions" aria-label="Primary">
+            <a class="button primary" href="#reservation">Reserve a table</a>
+            <a class="button secondary" href="#menu">Discover the menu</a>
+          </div>
         </div>
-        <div class="hero-stats" aria-label="Performance statistics">
+      </section>
+
+      <section class="section concept" id="concept" aria-labelledby="concept-title">
+        <div class="section-inner split">
           <div>
-            <strong>&lt;30s</strong>
-            <span>Average Response Time</span>
+            <p class="eyebrow">Concept</p>
+            <h2 id="concept-title">Japanese precision, Mediterranean light.</h2>
           </div>
+          <div class="copy">
+            <p>
+              Kasamatsu brings the restraint of Japanese dining to the rhythm of
+              the coast: clean flavors, quiet craft, and seasonal ingredients
+              shaped by the markets and waters around Saint-Tropez.
+            </p>
+            <p>
+              Near Ramatuelle, the restaurant takes its name from the umbrella
+              pine: a tree of shade, sea breeze, and composed generosity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="menu" aria-labelledby="menu-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Menu Preview</p>
+            <h2 id="menu-title">A short season, carefully served.</h2>
+          </div>
+
+          <div class="menu-grid">
+            <article class="menu-card">
+              <span>01</span>
+              <h3>Omakase</h3>
+              <p>Chef-led courses balancing pristine cuts, warm rice, citrus, and sea herbs.</p>
+            </article>
+            <article class="menu-card">
+              <span>02</span>
+              <h3>Robata</h3>
+              <p>Grilled vegetables, shellfish, and wagyu touched by charcoal and calm heat.</p>
+            </article>
+            <article class="menu-card">
+              <span>03</span>
+              <h3>Seasonal Fish</h3>
+              <p>Local catch prepared with dashi, olive oil, coastal greens, and precise knife work.</p>
+            </article>
+            <article class="menu-card">
+              <span>04</span>
+              <h3>Sake & Cocktails</h3>
+              <p>Mineral sake, low-intervention wines, and aperitifs built for long evenings.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section location" id="location" aria-labelledby="location-title">
+        <div class="section-inner location-block">
           <div>
-            <strong>24/7</strong>
-            <span>Always-On Lead Capture</span>
+            <p class="eyebrow">Location</p>
+            <h2 id="location-title">Near Ramatuelle, minutes from Saint-Tropez.</h2>
           </div>
+          <p>
+            A calm dining room imagined for warm evenings, pine shade, and a
+            table close to the sea. Full address and opening hours will be added
+            before launch.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="section reservation"
+        id="reservation"
+        aria-labelledby="reservation-title"
+      >
+        <div class="section-inner reservation-layout">
           <div>
-            <strong>3x</strong>
-            <span>More Booked Appointments</span>
+            <p class="eyebrow">Reservation</p>
+            <h2 id="reservation-title">Request a table.</h2>
+            <p class="reservation-note">
+              The Instant Lead assistant can help guests choose a time, share
+              notes, and communicate special requests.
+            </p>
           </div>
-        </div>
-      </div>
 
-      <div class="hero-card reveal delay-1">
-        <div class="browser-bar">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="chat-preview">
-          <div class="chat-heading">Live AI Assistant</div>
-          <div class="message bot">Hi, thanks for reaching out. What service are you looking for?</div>
-          <div class="message user">I need an appointment this week.</div>
-          <div class="message bot">Great. I can help. What day works best for you?</div>
-          <div class="message user">Thursday afternoon.</div>
-          <div class="message bot">Perfect. I found an available slot at 16:30. Should I reserve it?</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="problem section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">The problem</p>
-        <h2>You're Losing Money Every Day</h2>
-        <p class="section-subtitle">Leads often arrive when nobody is ready to answer. That delay gives competitors the advantage.</p>
-      </div>
-      <div class="container problem-grid">
-        <article class="problem-card reveal">
-          <div class="icon icon-missed" aria-hidden="true"></div>
-          <h3>Missed Calls & Forms</h3>
-          <p>Prospects contact you after hours, during lunch, or over the weekend. Without instant follow-up, they move on.</p>
-        </article>
-        <article class="problem-card reveal delay-1">
-          <div class="icon icon-response" aria-hidden="true"></div>
-          <h3>Slow Follow-Up</h3>
-          <p>When responses arrive hours later, the lead has often already contacted another provider.</p>
-        </article>
-        <article class="problem-card reveal delay-2">
-          <div class="icon icon-roi" aria-hidden="true"></div>
-          <h3>Wasted Ad Spend</h3>
-          <p>You pay to generate demand, but delayed response times reduce conversion and lower campaign ROI.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="demo" class="demo section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Interactive live demo</p>
-        <h2>Watch the AI Turn a Visitor into a Qualified Lead</h2>
-        <p class="section-subtitle">Choose a scenario and the demo will simulate how InstantLead AI replies, qualifies the prospect, captures contact details, and sends your team a clean lead summary.</p>
-      </div>
-
-      <div class="container demo-simulator reveal delay-1">
-        <div class="demo-chat-card">
-          <div class="demo-chat-header">
-            <div>
-              <strong>InstantLead AI Demo</strong>
-              <small id="demo-scenario-label">Dental practice lead</small>
+          <form class="reservation-form" data-reservation-form>
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required />
             </div>
-            <span class="status-pill">Live simulation</span>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="date">Date</label>
+                <input id="date" name="date" type="date" required />
+              </div>
+              <div class="field">
+                <label for="time">Time</label>
+                <input id="time" name="time" type="time" required />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="guests">Guests</label>
+                <input
+                  id="guests"
+                  name="guests"
+                  type="number"
+                  min="1"
+                  max="12"
+                  value="2"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4"></textarea>
+            </div>
+            <button class="button primary form-button" type="submit">Ask assistant</button>
+            <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section
+        class="section assistant-section"
+        id="assistant"
+        aria-labelledby="assistant-title"
+      >
+        <div class="section-inner assistant-layout">
+          <div>
+            <p class="eyebrow">AI Booking Assistant</p>
+            <h2 id="assistant-title">Reserve through a calmer conversation.</h2>
+            <p class="assistant-note">
+              Ask about availability, preferred tables, birthday touches,
+              champagne, cakes, dietary notes, or anything the team should know
+              before confirming the evening.
+            </p>
           </div>
 
-          <div class="demo-chat-body" id="demo-chat-body" aria-live="polite"></div>
+          <div class="assistant-card" data-chat-shell>
+            <div class="assistant-card-header">
+              <div>
+                <p>Kasamatsu Assistant</p>
+                <span>Table requests, availability, and special occasions</span>
+              </div>
+              <span class="assistant-status" data-chat-connection>Ready</span>
+            </div>
 
-          <div class="demo-replies" id="demo-replies">
-            <button type="button" data-scenario="dental">Dental emergency</button>
-            <button type="button" data-scenario="realestate">Real estate inquiry</button>
-            <button type="button" data-scenario="homeservices">Home services lead</button>
+            <div
+              class="assistant-messages"
+              data-chat-messages
+              aria-live="polite"
+              aria-label="Booking assistant messages"
+            >
+              <div class="assistant-message assistant-message-bot">
+                Good evening. I can help with table availability, special
+                requests, and booking details. What date and time would you
+                like?
+              </div>
+            </div>
+
+            <div class="assistant-prompts" aria-label="Suggested messages">
+              <button type="button" data-chat-prompt="Book a table for two tomorrow at 20:00.">
+                Table for two
+              </button>
+              <button type="button" data-chat-prompt="Can I request the most romantic table with champagne?">
+                Special occasion
+              </button>
+              <button type="button" data-chat-prompt="What is the best table for four people?">
+                Best table
+              </button>
+            </div>
+
+            <form class="assistant-input-row" data-chat-form>
+              <label class="visually-hidden" for="assistant-input">Message</label>
+              <input
+                id="assistant-input"
+                name="message"
+                type="text"
+                autocomplete="off"
+                placeholder="Ask for a table, time, or special request"
+                required
+              />
+              <button class="button primary" type="submit">Send</button>
+            </form>
           </div>
         </div>
+      </section>
+    </main>
 
-        <aside class="lead-summary-card">
-          <p class="eyebrow mini">Lead summary sent to your team</p>
-          <h3 id="lead-summary-title">Waiting for conversation...</h3>
-          <div class="lead-summary-grid">
-            <div><span>Name</span><strong id="summary-name">—</strong></div>
-            <div><span>Service</span><strong id="summary-service">—</strong></div>
-            <div><span>Urgency</span><strong id="summary-urgency">—</strong></div>
-            <div><span>Preferred time</span><strong id="summary-time">—</strong></div>
-            <div class="wide"><span>Contact</span><strong id="summary-contact">—</strong></div>
-            <div class="wide hot"><span>Status</span><strong id="summary-status">—</strong></div>
-          </div>
-          <button class="btn btn-primary full open-modal" data-source="Demo CTA">Try this on my website</button>
-        </aside>
-      </div>
-    </section>
+    <button
+      class="assistant-launcher"
+      type="button"
+      data-chat-launcher
+      aria-label="Open booking assistant"
+    >
+      <span></span>
+    </button>
 
-    <section id="features" class="features section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">The solution</p>
-        <h2>Meet Your AI Assistant That Never Sleeps</h2>
-        <p class="section-subtitle">A simple front-office automation layer for local service businesses.</p>
-      </div>
-      <div class="container features-grid">
-        <article class="feature-card reveal">
-          <span>1</span>
-          <h3>Instant Response</h3>
-          <p>Replies to website forms, emails, and messages in seconds.</p>
-        </article>
-        <article class="feature-card reveal delay-1">
-          <span>2</span>
-          <h3>Smart Qualification</h3>
-          <p>Asks targeted questions to separate serious prospects from low-value inquiries.</p>
-        </article>
-        <article class="feature-card reveal delay-2">
-          <span>3</span>
-          <h3>FAQ Handling</h3>
-          <p>Answers common questions about services, pricing, hours, and location.</p>
-        </article>
-        <article class="feature-card reveal">
-          <span>4</span>
-          <h3>Appointment Booking</h3>
-          <p>Guides qualified leads toward a call, visit, or consultation.</p>
-        </article>
-        <article class="feature-card reveal delay-1">
-          <span>5</span>
-          <h3>24/7 Coverage</h3>
-          <p>Works continuously, including evenings, weekends, and holidays.</p>
-        </article>
-        <article class="feature-card reveal delay-2">
-          <span>6</span>
-          <h3>Dynamic Lead Sheet</h3>
-          <p>Free trial and contact form submissions can be sent directly into your live spreadsheet.</p>
-        </article>
-      </div>
-    </section>
+    <footer class="site-footer">
+      <p>KASAMATSU <span lang="ja">カサマツ</span></p>
+      <p>Japanese restaurant near Saint-Tropez &amp; Ramatuelle</p>
+    </footer>
 
-    <section id="pricing" class="pricing section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Pricing</p>
-        <h2>Simple, Transparent Pricing</h2>
-        <p class="section-subtitle">No complicated onboarding. No long-term commitment.</p>
-      </div>
-      <div class="container pricing-grid">
-        <article class="pricing-card reveal">
-          <h3>Setup + Monthly</h3>
-          <div class="price-row">
-            <span class="price">$200</span>
-            <span>one-time setup</span>
-          </div>
-          <div class="monthly">$200/mo</div>
-          <ul>
-            <li>Custom AI training</li>
-            <li>24/7 response system</li>
-            <li>Lead qualification</li>
-            <li>Appointment booking flow</li>
-            <li>Daily lead summaries</li>
-            <li>Email and form integration</li>
-            <li>Priority support</li>
-          </ul>
-          <button class="btn btn-secondary open-modal" data-source="Pricing Setup Monthly">Get Started</button>
-        </article>
-        <article class="pricing-card featured reveal delay-1">
-          <div class="popular">Most Popular</div>
-          <h3>Simple Monthly</h3>
-          <div class="price-row">
-            <span class="price">$50/mo</span>
-          </div>
-          <div class="monthly">No setup fee - Cancel anytime</div>
-          <ul>
-            <li>Custom AI training included</li>
-            <li>24/7 instant response</li>
-            <li>Lead qualification and routing</li>
-            <li>Daily summaries by email</li>
-            <li>No long-term contract</li>
-            <li>Ideal for testing ROI</li>
-          </ul>
-          <button class="btn btn-primary open-modal" data-source="Pricing Simple Monthly">Start Today</button>
-        </article>
-      </div>
-      <div class="container center quick-note reveal"><span aria-hidden="true"></span>Quick setup: live in 24 hours from $50/month.</div>
-    </section>
-
-    <section id="testimonials" class="testimonials section-padding">
-      <div class="container center reveal">
-        <p class="eyebrow">Results</p>
-        <h2>Real Results from Real Businesses</h2>
-        <p class="section-subtitle">Examples of how faster response can improve lead capture.</p>
-      </div>
-      <div class="container testimonial-grid">
-        <article class="testimonial reveal">
-          <p>“We stopped losing after-hours inquiries and started converting conversations into booked appointments.”</p>
-          <div class="person"><span>DR</span><div><strong>Dr. Rachel Martinez</strong><small>Smile Bright Dental</small></div></div>
-        </article>
-        <article class="testimonial reveal delay-1">
-          <p>“It feels like having a receptionist that works all day and never lets a prospect wait.”</p>
-          <div class="person"><span>JT</span><div><strong>James Thompson</strong><small>Thompson Home Services</small></div></div>
-        </article>
-        <article class="testimonial reveal delay-2">
-          <p>“The value is obvious. Our team spends less time chasing cold leads and more time closing warm ones.”</p>
-          <div class="person"><span>SK</span><div><strong>Sarah Kim</strong><small>Elite Realty Group</small></div></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="final-cta section-padding">
-      <div class="container center reveal">
-        <h2>Stop Losing Leads Today</h2>
-        <p>Capture more opportunities with instant AI follow-up.</p>
-        <button class="btn btn-light open-modal" data-source="Final CTA Free Trial">Start Your Free Trial Now</button>
-        <small>Setup in 24 hours - From $50/month - Cancel anytime</small>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-inner">
-      <p>© 2026 InstantLead AI. All rights reserved.</p>
-      <p>Built for local businesses that value every lead.</p>
-    </div>
-  </footer>
-
-  <button class="floating-chat" aria-label="Open chat demo">
-    <span class="chat-button-icon" aria-hidden="true"></span>
-  </button>
-
-  <div class="chat-widget" aria-live="polite">
-    <div class="chat-widget-header">
-      <div>
-        <strong>InstantLead AI</strong>
-        <small>Lead capture assistant</small>
-      </div>
-      <button class="close-chat" aria-label="Close chat widget">×</button>
-    </div>
-    <div class="chat-widget-body">
-      <div class="message bot">Hi. I’m InstantLead AI. Tell me what kind of business you run and I’ll qualify the lead like a real assistant.</div>
-    </div>
-    <div class="chat-widget-actions" id="chat-suggestions" aria-label="Quick chat options">
-      <button type="button" data-chat-prompt="I run a dental practice">Dental</button>
-      <button type="button" data-chat-prompt="I run a real estate agency">Real estate</button>
-      <button type="button" data-chat-prompt="I run a home services company">Home services</button>
-    </div>
-    <div class="chat-widget-input">
-      <input type="text" placeholder="Type a message..." aria-label="Chat message" />
-      <button type="button">Send</button>
-    </div>
-  </div>
-
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-backdrop close-modal"></div>
-    <div class="modal-card">
-      <button class="modal-close close-modal" aria-label="Close signup form">×</button>
-      <div class="form-view">
-        <h2 id="modal-title">Start Your Free Trial</h2>
-        <p>Submit your details and they will be prepared for your connected lead spreadsheet.</p>
-        <form id="lead-form">
-          <input type="hidden" name="source" id="lead-source" value="Website form" />
-          <input type="hidden" name="source_button" id="source-button" value="Website form" />
-          <input type="hidden" name="timestamp" id="lead-timestamp" />
-          <input type="hidden" name="page_url" id="page-url" />
-          <input type="hidden" name="user_agent" id="user-agent" />
-
-          <label>Company *<input name="company" type="text" autocomplete="organization" required /></label>
-          <label>Business Type *
-            <select name="business_type" required>
-              <option value="">Select business type</option>
-              <option>Dental Practice</option>
-              <option>Medical Practice</option>
-              <option>Med Spa</option>
-              <option>Real Estate</option>
-              <option>Home Services</option>
-              <option>Coaching / Consulting</option>
-              <option>Other</option>
-            </select>
-            <div class="other-business-field" id="other-business-field" hidden>
-              <input name="business_type_other" id="business-type-other" type="text" placeholder="Type your business type (optional)" autocomplete="off" />
-            </div>
-          </label>
-          <label>Your Full Name *<input name="name" type="text" autocomplete="name" required /></label>
-          <label>Email Address *<input name="email" type="email" autocomplete="email" required /></label>
-          <label>Phone Number *
-            <div class="phone-field">
-              <select name="phone_country_iso" id="phone-country" aria-label="Country calling code"></select>
-              <input name="phone_local" id="phone-local" type="tel" autocomplete="tel-national" required />
-            </div>
-            <input name="phone" id="phone-full" type="hidden" />
-          </label>
-          <label>Website URL<input name="website" type="url" placeholder="https://" /></label>
-          <label>Preferred Plan *
-            <select name="plan" required>
-              <option value="">Choose a plan</option>
-              <option>Setup + $200/month</option>
-              <option>$50/month - Most Popular</option>
-              <option>Not sure yet</option>
-            </select>
-          </label>
-          <label>Preferred Contact Method
-            <select name="contact_preference">
-              <option>Email</option>
-              <option>Phone</option>
-              <option>WhatsApp</option>
-            </select>
-          </label>
-          <label class="field-full">Tell us about your lead volume<textarea name="volume" rows="3" placeholder="Example: 30-50 inquiries per month, mostly from Google Ads"></textarea></label>
-          <label class="field-full">Message *<textarea name="message" rows="3" placeholder="Anything specific you want the AI to handle?" required></textarea></label>
-          <button class="btn btn-primary full" type="submit">Start Free Trial</button>
-          <p class="form-note" id="form-note">Connect the Google Apps Script URL in <code>script.js</code> to store submissions in a live spreadsheet.</p>
-          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
-        </form>
-      </div>
-      <div class="success-view">
-        <div class="success-icon" aria-hidden="true"></div>
-        <h2>Submission received</h2>
-        <p id="success-message">Thank you. Your details have been captured.</p>
-        <button class="btn btn-primary close-modal">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
