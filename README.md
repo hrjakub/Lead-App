@@ -1,204 +1,103 @@
-# Kasamatsu
+# Monika AI Prototype
 
-Private testing website for Instant Lead, featuring the Kasamatsu Japanese restaurant concept near Ramatuelle and Saint-Tropez.
+This workspace now contains both:
 
-## Current Version
+- the planning foundation for the TRRF LungFit concept
+- a first deployable `Next.js` prototype with mock data and simulated AI responses
 
-**v0.2.1 — Corrected GitHub upload structure**
+Important product rule:
 
-This version keeps the first real AI booking assistant infrastructure and packages the files so GitHub and Vercel can read the folders correctly:
+- `LungFit` is treated as a program for `lung cancer patients only`
+- the `TRRF` dashboard and donor-story layer focus on that lung-cancer cohort
+- the `doctor` experience can still review and compare other cancer types through the broader clinical dataset
 
-- Static Kasamatsu landing page
-- Reservation form connected to the assistant flow
-- AI-style booking assistant interface on the page
-- Vercel backend endpoint at `/api/chat`
-- OpenAI Responses API integration through a secure serverless function
-- Supabase database schema for 10 restaurant tables and reservations
-- Double-booking protection for overlapping reservations
-- Placeholder environment variable file for setup
-- Correct root folders for GitHub: `api/`, `assets/`, and `database/`
+The system is intended to:
 
-No React, Next.js, npm install, or build step is required.
+- collect patient-reported data through a supportive AI chatbot and structured surveys
+- collect separate doctor / medical-staff assessments and comments
+- store the data in a secure database with role-based access
+- generate dashboards, exports, AI summaries, and donor-safe draft stories for TRRF staff review
 
-## How The Project Works
+## Core principles
 
-```text
-index.html
-```
+- The database is the system of record.
+- Excel / CSV are export layers, not the source of truth.
+- The chatbot is supportive and reflective, not a clinician.
+- The system must not provide diagnosis, treatment advice, or medical recommendations.
+- Donor-facing stories must stay draft-only until reviewed and approved by TRRF staff.
+- Privacy, consent, anonymization, and access control are first-class requirements.
 
-Contains the restaurant landing page, concept, menu preview, location block, reservation form, and booking assistant section.
+## What is already built
 
-```text
-style.css
-```
+The prototype app now includes:
 
-Controls the full visual design, responsive layout, reservation form, and assistant interface.
+- a landing page and mock role-based access page
+- a `Patient` portal with:
+  - supportive chatbot
+  - non-medical disclaimer
+  - consent gate before sensitive collection
+  - weekly structured check-in
+  - no dashboard in v1
+- a `Doctor` portal with:
+  - assigned-patient list
+  - clickable patient detail views
+  - de-identified hospital-wide case search
+- a `TRRF` portal with:
+  - patient list and drill-down views
+  - simple dashboard cards
+  - donor-story review queue
+  - CSV export route
+- future-ready scaffolding for:
+  - Supabase schema
+  - environment variables
+  - later real AI integration
 
-```text
-script.js
-```
+## Prototype routes
 
-Runs the logo animation, reservation form behavior, chat UI, quick prompts, and browser-to-backend calls.
+- `/`
+- `/login`
+- `/patient`
+- `/doctor`
+- `/doctor/patients/michael-scott`
+- `/trrf`
+- `/trrf/patients/michael-scott`
+- `/api/export/patients`
 
-```text
-api/chat.js
-```
+## Local run
 
-Runs only on Vercel. It keeps the OpenAI API key and Supabase service key private, talks to OpenAI, and lets the AI call reservation tools.
+1. Install dependencies with `npm install`
+2. Start the app with `npm run dev`
+3. Open [http://localhost:3000](http://localhost:3000)
 
-```text
-database/supabase-schema.sql
-```
+For now the project runs in `mock` mode. Real authentication, database reads/writes, and live AI calls are still the next layer.
 
-Creates the Supabase tables, seeds 10 restaurant tables, and adds functions for checking availability and creating reservations.
+## Documentation
 
-```text
-.env.example
-```
+- [PROJECT_OVERVIEW.md](/Users/jakub/Documents/TRRF Website/PROJECT_OVERVIEW.md)
+- [SYSTEM_ARCHITECTURE.md](/Users/jakub/Documents/TRRF Website/SYSTEM_ARCHITECTURE.md)
+- [DATABASE_SCHEMA.md](/Users/jakub/Documents/TRRF Website/DATABASE_SCHEMA.md)
+- [MVP_ROADMAP.md](/Users/jakub/Documents/TRRF Website/MVP_ROADMAP.md)
+- [PRIVACY_AND_CONSENT_NOTES.md](/Users/jakub/Documents/TRRF Website/PRIVACY_AND_CONSENT_NOTES.md)
+- [docs/trrf-prototype-blueprint.md](/Users/jakub/Documents/TRRF Website/docs/trrf-prototype-blueprint.md)
 
-Shows which environment variables are needed. Do not put real keys in GitHub.
+## Confirmed survey sources
 
-## Step By Step Setup
+Patient surveys:
 
-### 1. Upload The Project To GitHub
+- [General Cancer Patient Self-Report Survey](https://forms.gle/4KHu9Lr8E98GjUNL9)
+- [TRRF Patient Programme Experience & Impact Survey](https://forms.gle/rwg1AyC5Y1SXwCG27)
 
-Upload these files and folders to the root of the GitHub repository:
+Doctor / medical-staff surveys:
 
-- `api/`
-- `assets/`
-- `database/`
-- `index.html`
-- `style.css`
-- `script.js`
-- `.env.example`
-- `.gitignore`
-- `README.md`
-- `CHANGELOG.md`
-- `ROADMAP.md`
-- `STATUS.md`
-- `VERSION`
+- [Medical Staff General Cancer Patient Evaluation Survey](https://forms.gle/L81VNh6ds66jifnK9)
+- [TRRF Medical Staff Programme Impact Survey](https://forms.gle/xNwaW9Ye2yYc2AUKA)
 
-Do not upload:
+## Current recommended first build
 
-- `.DS_Store`
-- `.env`
-- `.env.local`
-- Any file containing real secret keys
+The current codebase now implements that first presentable version with mock data. The next recommended step is to replace the mock layer with:
 
-Your GitHub repository root must show the folders directly like this:
-
-```text
-api/chat.js
-assets/logo.png
-database/supabase-schema.sql
-index.html
-style.css
-script.js
-```
-
-Do not upload the project as an extra nested folder like this:
-
-```text
-Kasamatsu/api/chat.js
-Kasamatsu/index.html
-```
-
-### 2. Create A Supabase Project
-
-1. Go to Supabase.
-2. Create a new project.
-3. Open the SQL Editor.
-4. Paste everything from `database/supabase-schema.sql`.
-5. Run the SQL.
-
-This creates:
-
-- 10 restaurant tables
-- A reservations table
-- A restaurant FAQ table
-- Availability checking
-- Reservation creation
-- Double-booking protection
-
-### 3. Get Supabase Keys
-
-In Supabase, go to:
-
-```text
-Project Settings > API
-```
-
-Copy:
-
-- Project URL
-- Service role key
-
-The service role key must only be used in Vercel environment variables. Never place it inside browser JavaScript.
-
-### 4. Create An OpenAI API Key
-
-Create an OpenAI API key from the OpenAI platform dashboard.
-
-Keep it private. It belongs in Vercel, not in `script.js`.
-
-### 5. Add Environment Variables In Vercel
-
-In Vercel, open:
-
-```text
-Project > Settings > Environment Variables
-```
-
-Add:
-
-```text
-OPENAI_API_KEY
-OPENAI_MODEL
-SUPABASE_URL
-SUPABASE_SERVICE_ROLE_KEY
-RESTAURANT_TIMEZONE
-```
-
-Suggested values:
-
-```text
-OPENAI_MODEL=gpt-4.1-mini
-RESTAURANT_TIMEZONE=Europe/Paris
-```
-
-### 6. Redeploy On Vercel
-
-After adding the environment variables:
-
-1. Go to the Vercel Deployments tab.
-2. Redeploy the latest GitHub commit.
-3. Open the live website.
-
-The assistant will not fully work from `file://` because `/api/chat` only exists after Vercel deploys the backend function.
-
-### 7. Test The Assistant
-
-Try:
-
-- “Book a table for two tomorrow at 20:00.”
-- “Can I request the most romantic table with champagne?”
-- “Book four people Friday at 19:30 under Jakub, jakub@example.com.”
-- Try booking the same table/time twice to confirm the database prevents overlap.
-
-## Current Limitations
-
-- No staff dashboard yet.
-- No email or SMS confirmations yet.
-- No payment/deposit flow yet.
-- Opening hours and location are prototype values.
-- The assistant creates reservations in Supabase, but restaurant staff still need a future dashboard to review them comfortably.
-
-## Next Build Direction
-
-Next practical version:
-
-- Staff dashboard for today’s bookings
-- Manual reservation editing
-- Cancel/change reservation flow
-- Email notification to the restaurant team
-- More detailed menu and policy knowledge
+1. Supabase Auth
+2. Supabase Postgres
+3. persisted chat and survey submissions
+4. real role-based access control
+5. later, a live OpenAI integration
